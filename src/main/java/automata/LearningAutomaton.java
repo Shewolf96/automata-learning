@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.function.BiFunction;
 
-public class LearningAutomaton implements Automaton {
+public class LearningAutomaton extends Automaton {
 
     LinkedHashMap<Integer, State> States;
     State initialState;

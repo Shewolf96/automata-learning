@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
-public final class TargetAutomaton implements Automaton {
+public final class TargetAutomaton extends Automaton {
     //make all fields and methods static
     private static Long initialStateId;
     private static State initialState;
@@ -87,21 +87,22 @@ public final class TargetAutomaton implements Automaton {
 
     ///maybe not public - protected and then Teacher.java could extend it
 
-    public static Long getInitialStateId() {
-        return initialStateId;
-    }
-
-    public static State getInitialState() {
-        return initialState;
-    }
+//    @Override
+//    public static Long getInitialStateId() {
+//        return initialStateId;
+//    }
+//
+//    public static State getInitialState() {
+//        return initialState;
+//    }
 
     public static JSONArray getAlphabet() {
         return alphabet;
     }
 
-    public static LinkedHashMap<Long, State> getStates() {
-        return states;
-    }
+//    public static LinkedHashMap<Long, State> getStates() {
+//        return states;
+//    }
 
     public static JSONArray getStatesJSON() {
         return statesJSON;

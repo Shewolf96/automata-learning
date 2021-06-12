@@ -2,14 +2,15 @@ package automata;
 
 import org.json.simple.JSONObject;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class State {
     private Long id;
     private Boolean isAccepting;
     private HashMap<String, State> stateTransitions = new HashMap<>();
     private HashMap<String, Long> indexTransitions = new HashMap<>();
+    private Boolean visited = false;
 
     public State(JSONObject state) {
         this.id = (Long) state.get("id");
@@ -36,6 +37,14 @@ public class State {
     public HashMap<String, Long> getIndexTransitions() { return indexTransitions; }
 
     public void setIndexTransitions(HashMap<String, Long> indexTransitions) { this.indexTransitions = indexTransitions; }
+
+    public Boolean isVisited() { return visited; }
+
+    public void setVisited(Boolean visited) { this.visited = visited; }
+
+    public List<State> getDescendants() {
+        return stateTransitions.values().stream().collect(Collectors.toList());
+    }
 
     @Override
     public String toString() {

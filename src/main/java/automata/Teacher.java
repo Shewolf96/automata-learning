@@ -12,32 +12,26 @@ public class Teacher {
 
     public InfiniteWordGenerator equivalenceQuery(LearningAutomaton learningAutomaton)
     {
-        //to jednak jest easy
-        //stan początkowy w jednym i w drugim mamy
-        //dla każdego przejścia daną literką (bo to deterministyczne, więc wszystko wiadomo)
-        //przyrównujesz sobie kolejne stany
-        //no i jak trafisz na jakiś ??
-        //tzn gdzieś musisz pamiętać sobie, czy stan jest odwiedzony czy nie (taki bfs będzie)
-        //i jaki jest numerek równoważnego stanu
-        //i nie musi ich być tyle samo ALE
-        //analogiczne stany muszą być albo oba accept albo reject
-        //no i zakładamy, że ten learning jest mniejszy równy
-        //czyli kilka stanów tego targeta może odpowiadać jednemu - ale chyba wtedy wszystkie muszą być też odpowiednio akceptujące lub nie
-        //no i co z przejściami?
-        //to chyba i tak jakieś klasy abstrakcji będą
-        //w sensie wszystkie przejścia z danej grupy daną literką muszą być do innej klasy abstrakcji (grupy), która odpowiada takiemu stanowi, do którego tąże literką przechodzisz z LA
-        //czy coś
-        //Tylko nie wiem czy to oznacza, że dwa razy tego bfsa robisz? Czy da się to ogarnąć od razu?
-        //Bo teraz to mi się wydaje, że nie wiesz, które stany będą w danej klasie abstrakcji, toteż nie możesz od razu dla każdego z nich sprawdzić jakiegoś przejścia (daną literką)
-        //jutro to jeszcze trzeba będzie rozrysować
-        //plus porobić testy (też narysuj je sobie wcześniej)
-        //no i wreszcie załóż repo na githubie, żeby zapisywać zmiany
-        //i....
-        //możesz zacząć implementować faktyczny algo ^^^
-        //(w którymś momencie trzeba będzie też ten podział na moduły zrobić)
+        List<State> reachableStates = AuxiliaryFunctions.getReachableStates(targetAutomaton); //tylko te stany przeszukujemy potem
+        for(State s : reachableStates) {
+            if(s.isAccepting()) AuxiliaryFunctions.checkAllCycles(targetAutomaton, s); // .findNextCycle would be cooler
+        }
+        //(i wszystko to ofc trzeba zrobić w drugą stronę)
+        //może nie tylko reachable ale też od razu accepting?
+        //czyli mamy reachableAcceptingStates
+        //teraz funkcja, która bierze te RAStates, TA i automat produktowy... i ...
+        //kolejno:
+        //  dla każdego RAState: znajduje kolejno wszystkie cykle
+        //      dla każdego znalezionego cyklu: (czyli stany + jakimi literami przeszłaś - to nie graf ostatecznie!)
+        //          przechodzisz tę ścieżkę w automacie produktowym i jeśli nie znajdziesz żadnego acc na drugiej współrzędnej, to kończysz całe szukanie - automaty nie są równoważne
 
         return new InfiniteWordGenerator();//tu jakiś optional musi być, a nie słowo puste!!
     }
+
+    // *dokładniejsza myśl, żeby nie uciekła: odkładasz sobie ten potencjalny cykl na stos i jeśli następny wierzchołek wraca do początkowego, to...
+    //  przeglądamy ten produktowy automat po tym cyklu (ale nie możesz go stracić jeszcze - tylko ostatni wierzchołek ew. ściągnąć) i szukamy acc, jak nie znajdziemy to zwracamy false (nie równoważne)
+    // a jak znajdziemy to zwracamy true - że jest ok i można szukać kolejnego cyklu tam, gdzie skończyliśmy
+    // a jak przejrzymy wszystkich sąsiadów i jest ok cały czas (true ze wszystkich wywołań rek), to zwracamy true, że ogólnie ok
 
     public Integer getLoopIndexUpperBound(InfiniteWordGenerator infiniteWord) {
         int N = targetAutomaton.getSize();
