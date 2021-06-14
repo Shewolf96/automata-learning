@@ -1,6 +1,7 @@
 package automata;
 
 import java.util.List;
+import java.util.Stack;
 
 public class Teacher {
 
@@ -12,13 +13,15 @@ public class Teacher {
 
     public InfiniteWordGenerator equivalenceQuery(LearningAutomaton learningAutomaton)
     {
-        List<State> reachableStates = AuxiliaryFunctions.getReachableStates(targetAutomaton); //tylko te stany przeszukujemy potem
-        for(State s : reachableStates) {
-            if(s.isAccepting()) AuxiliaryFunctions.checkAllCycles(targetAutomaton, s); // .findNextCycle would be cooler
+        List<State> reachableStates = AuxiliaryFunctions.getReachableStates(targetAutomaton);
+        for(State initialState : reachableStates) {
+            targetAutomaton.getStateCollection().stream().forEach(s -> s.setVisited(false));
+            Stack cycle = new Stack<>();
+            if(initialState.isAccepting() && !AuxiliaryFunctions.checkAllCycles(targetAutomaton, initialState, initialState, cycle))
+                // return false; // .findNextCycle would be cooler
+                return new InfiniteWordGenerator();
         }
         //(i wszystko to ofc trzeba zrobić w drugą stronę)
-        //może nie tylko reachable ale też od razu accepting?
-        //czyli mamy reachableAcceptingStates
         //teraz funkcja, która bierze te RAStates, TA i automat produktowy... i ...
         //kolejno:
         //  dla każdego RAState: znajduje kolejno wszystkie cykle

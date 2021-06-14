@@ -15,7 +15,7 @@ public final class TargetAutomaton extends Automaton {
 
     private static JSONArray alphabet;
 
-    private static LinkedHashMap<Long, State> states = new LinkedHashMap<>();
+//    private static LinkedHashMap<Long, State> states = new LinkedHashMap<>();
     private static JSONArray statesJSON;
 
     public TargetAutomaton(JSONObject automaton) {
