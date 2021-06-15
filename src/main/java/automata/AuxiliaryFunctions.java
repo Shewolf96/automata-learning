@@ -48,8 +48,41 @@ public class AuxiliaryFunctions {
         return true;
     }
 
+    public static Boolean checkAllCycles(P<Automaton, Automaton> productAutomaton, P<State, State> initialState, P<State, State> currentState, Stack<String> currentCycle) {
+        currentState.first.setVisited(true);
+        currentState.second.setVisited(true);
+        for(Map.Entry<String, State> transition : initialState.first.getStateTransitions().entrySet()) {
+            String letter = transition.getKey();
+            P<State, State> nextState = new P(transition.getValue(),
+                    currentState.second.getStateTransitions().get(letter));
+
+            if(nextState == initialState) {
+                if (!checkCycle2(productAutomaton, initialState.second, currentCycle)) {
+                    return false;
+                }
+                nextState.first.setVisited(true);
+                nextState.second.setVisited(true);
+            }
+
+            if(nextState == currentState || (nextState.first.isVisited() && nextState.first.isVisited())) continue;
+
+            currentCycle.push(letter);
+            if(!checkAllCycles(productAutomaton, initialState, nextState, currentCycle)) return false;
+        }
+        return true;
+    }
+
     public static Boolean checkCycle(Automaton automaton, Stack<Pair> cycle) {
         return true;
+    }
+
+    public static Boolean checkCycle2(P<Automaton, Automaton> productAutomaton, State initialState, Stack<String> cycle) {
+        State currentState = initialState;
+        for(String letter : cycle) {//tylko w jakiej kolejnosic iteruje sie po stosie???
+            if(currentState.isAccepting()) return true;
+            currentState = currentState.getStateTransitions().get(letter);
+        }
+        return false;
     }
 
 
