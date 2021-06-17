@@ -13,28 +13,18 @@ public class Teacher {
 
     public InfiniteWordGenerator equivalenceQuery(LearningAutomaton learningAutomaton)
     {
-        List<State> reachableStates = AuxiliaryFunctions.getReachableStates(targetAutomaton);
-        for(State initialState : reachableStates) {
+        P<Automaton, Automaton> productAutomaton = new P(targetAutomaton, learningAutomaton);
+        List<ProductState> reachableProductStates = AuxiliaryFunctions.getReachableStates(productAutomaton);
+
+        for(ProductState initialState : reachableProductStates) {
             targetAutomaton.getStateCollection().stream().forEach(s -> s.setVisited(false));
             Stack cycle = new Stack<>();
-            if(initialState.isAccepting() && !AuxiliaryFunctions.checkAllCycles(targetAutomaton, initialState, initialState, cycle))
-                // return false; // .findNextCycle would be cooler
-                return new InfiniteWordGenerator();
+            if(initialState.first.isAccepting() && !AuxiliaryFunctions.checkAllCycles(new P(targetAutomaton, learningAutomaton), initialState, initialState, cycle))
+                return AuxiliaryFunctions.getDivergingWord(targetAutomaton, initialState.first, cycle);
         }
-        //(i wszystko to ofc trzeba zrobić w drugą stronę)
-        //teraz funkcja, która bierze te RAStates, TA i automat produktowy... i ...
-        //kolejno:
-        //  dla każdego RAState: znajduje kolejno wszystkie cykle
-        //      dla każdego znalezionego cyklu: (czyli stany + jakimi literami przeszłaś - to nie graf ostatecznie!)
-        //          przechodzisz tę ścieżkę w automacie produktowym i jeśli nie znajdziesz żadnego acc na drugiej współrzędnej, to kończysz całe szukanie - automaty nie są równoważne
-
-        return new InfiniteWordGenerator();//tu jakiś optional musi być, a nie słowo puste!!
+        //no i ofc sprawdź jeszcze w drugą stronę
+        return new InfiniteWordGenerator();
     }
-
-    // *dokładniejsza myśl, żeby nie uciekła: odkładasz sobie ten potencjalny cykl na stos i jeśli następny wierzchołek wraca do początkowego, to...
-    //  przeglądamy ten produktowy automat po tym cyklu (ale nie możesz go stracić jeszcze - tylko ostatni wierzchołek ew. ściągnąć) i szukamy acc, jak nie znajdziemy to zwracamy false (nie równoważne)
-    // a jak znajdziemy to zwracamy true - że jest ok i można szukać kolejnego cyklu tam, gdzie skończyliśmy
-    // a jak przejrzymy wszystkich sąsiadów i jest ok cały czas (true ze wszystkich wywołań rek), to zwracamy true, że ogólnie ok
 
     public Integer getLoopIndexUpperBound(InfiniteWordGenerator infiniteWord) {
         int N = targetAutomaton.getSize();

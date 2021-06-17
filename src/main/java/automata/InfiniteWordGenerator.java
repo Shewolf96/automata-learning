@@ -22,6 +22,11 @@ public class InfiniteWordGenerator {
         this.v = v;
     }
 
+    public InfiniteWordGenerator(List<String> w, List<String> v) {
+        this.w = w.toArray(String[]::new);
+        this.v = v.toArray(String[]::new);
+    }
+
     public String [] getPrefix(Long prefix) {
         return Stream.concat(Stream.of(w), Stream.generate(this::getVAsList).flatMap(Collection::stream))
                 .limit(prefix).toArray(String[]::new);
@@ -49,5 +54,9 @@ public class InfiniteWordGenerator {
 
     public List<String> getVAsList() {
         return Lists.newArrayList(v);
+    }
+
+    public Boolean isEmpty() {
+        return (v == null || v.length == 0);
     }
 }
