@@ -6,55 +6,30 @@ import java.util.LinkedHashMap;
 import java.util.function.BiFunction;
 
 public abstract class Automaton {
-//    private LinkedHashMap<Integer, State> States = new LinkedHashMap();
-    protected static LinkedHashMap<Long, State> states = new LinkedHashMap<>();
-    protected Integer initialStateId;
+    protected LinkedHashMap<Long, State> states = new LinkedHashMap<>();
+    protected Long initialStateId;
     protected State initialState;
     protected HashSet<String> letters = new HashSet<>();
 
     public abstract <B> B foldRight(B z, BiFunction<?, B, B> f);
 
-//    public LinkedHashMap<Integer, State> getStates() {
-//        return States;
-//    }
-//
-//    public void setStates(LinkedHashMap<Integer, State> states) {
-//        States = states;
-//    }
-
-    public static Collection<State> getStateCollection() {
+    public Collection<State> getStateCollection() {
         return states.values();
     }
 
-    public static LinkedHashMap<Long, State> getStates() {
-        return states;
-    }
+    public LinkedHashMap<Long, State> getStates() { return states; }
 
-    public static void setStates(LinkedHashMap<Long, State> states) {
-        Automaton.states = states;
-    }
+    public void setStates(LinkedHashMap<Long, State> states) { this.states = states; }
 
-    public HashSet<String> getLetters() {
-        return letters;
-    }
+    public Long getInitialStateId() { return initialStateId; }
 
-    public void setLetters(HashSet<String> letters) {
-        this.letters = letters;
-    }
+    public void setInitialStateId(Long initialStateId) { this.initialStateId = initialStateId; }
 
-    public Integer getInitialStateId() {
-        return initialStateId;
-    }
+    public State getInitialState() { return initialState; }
 
-    public void setInitialStateId(Integer initialStateId) {
-        this.initialStateId = initialStateId;
-    }
+    public void setInitialState(State initialState) { this.initialState = initialState; }
 
-    public void setInitialState(State initialState) {
-        this.initialState = initialState;
-    }
+    public HashSet<String> getLetters() { return letters; }
 
-    public State getInitialState() {
-        return initialState;
-    }
+    public void setLetters(HashSet<String> letters) { this.letters = letters; }
 }

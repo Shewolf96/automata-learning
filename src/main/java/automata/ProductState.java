@@ -7,6 +7,9 @@ public class ProductState {
 
     public P<State, State> productState;
     private Boolean visited = false;
+    private Boolean reachable = false;
+    private ProductState predecessor;
+    private HashMap<String, ProductState> stateTransitions = new HashMap<>();
 
     public State first;
     public State second;
@@ -25,7 +28,17 @@ public class ProductState {
 
     public void setVisited(Boolean visited) { this.visited = visited; }
 
-//    public List<ProductState> getDescendants() {
+    public Boolean isReachable() { return reachable; }
+
+    public void setReachable(Boolean reachable) { this.reachable = reachable; }
+
+    public ProductState getPredecessor() { return predecessor; }
+
+    public void setPredecessor(ProductState predecessor) { this.predecessor = predecessor; }
+
+    public HashMap<String, ProductState> getStateTransitions() { return stateTransitions; }
+
+    //    public List<ProductState> getDescendants() {
 //        List<ProductState> descendants = new LinkedList<>();
 //        for(Map.Entry<String, State> entrySet: productState.first.getStateTransitions().entrySet()) {
 //            State s1 = entrySet.getValue();
@@ -38,6 +51,16 @@ public class ProductState {
     public Map<String, ProductState> getDescendants() {
         Map<String, ProductState> descendants = new HashMap<>();
         for(Map.Entry<String, State> entrySet: productState.first.getStateTransitions().entrySet()) {
+            State s1 = entrySet.getValue();
+            State s2 = productState.second.getStateTransitions().get(entrySet.getKey());
+            descendants.put(entrySet.getKey(), new ProductState(new P(s1, s2)));
+        }
+        return descendants;
+    }
+
+    public Map<String, ProductState> getDescendants2() {
+        Map<String, ProductState> descendants = new HashMap<>();
+        for(Map.Entry<String, State> entrySet : productState.first.getStateTransitions().entrySet()) {
             State s1 = entrySet.getValue();
             State s2 = productState.second.getStateTransitions().get(entrySet.getKey());
             descendants.put(entrySet.getKey(), new ProductState(new P(s1, s2)));

@@ -1,16 +1,12 @@
 package automata;
 
 import com.google.inject.internal.util.Lists;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class InfiniteWordGenerator {
 
-//    public Pair<String [], String []> infiniteWord;
     private String [] w;
     private String [] v;
 
@@ -23,8 +19,8 @@ public class InfiniteWordGenerator {
     }
 
     public InfiniteWordGenerator(List<String> w, List<String> v) {
-        this.w = w.toArray(String[]::new);
-        this.v = v.toArray(String[]::new);
+        this.w = w.toArray(new String[0]);
+        this.v = v.toArray(new String[0]);
     }
 
     public String [] getPrefix(Long prefix) {
