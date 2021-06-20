@@ -46,16 +46,11 @@ public class Main {
             int loopIndex = teacher.loopIndexQuery(infiniteWord);
             boolean membership = teacher.membershipQuery(infiniteWord);
 
+            LearningAutomaton automaton = new LearningAutomaton(automata, alphabet, states, iniitialState);
+            teacher.equivalenceQuery(automaton);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-        //read input
-        //create target automata (TA)
-        //create basic learning automata (LA)
-        //asking three types of queries
-        //implement expanding LA so that it's equivalent to TA
-        //Idk, print some message
-        //create some tests
-        //i elo
 }

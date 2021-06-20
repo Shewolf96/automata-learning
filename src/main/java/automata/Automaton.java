@@ -9,8 +9,7 @@ public abstract class Automaton {
     protected LinkedHashMap<Long, State> states = new LinkedHashMap<>();
     protected Long initialStateId;
     protected State initialState;
-    protected HashSet<String> letters = new HashSet<>();
-
+    protected String[] letters;
     public abstract <B> B foldRight(B z, BiFunction<?, B, B> f);
 
     public Collection<State> getStateCollection() {
@@ -29,7 +28,7 @@ public abstract class Automaton {
 
     public void setInitialState(State initialState) { this.initialState = initialState; }
 
-    public HashSet<String> getLetters() { return letters; }
+    public String[] getLetters() { return letters; }
 
-    public void setLetters(HashSet<String> letters) { this.letters = letters; }
+    public void setLetters(String[] letters) { this.letters = letters; }
 }

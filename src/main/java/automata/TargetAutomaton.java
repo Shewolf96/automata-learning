@@ -5,33 +5,18 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.*;
-import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
 public final class TargetAutomaton extends Automaton {
-    //make all fields and methods static
-    private static Long initialStateId;
-    private static State initialState;
-
-    private static JSONArray alphabet;
-
-//    private static LinkedHashMap<Long, State> states = new LinkedHashMap<>();
-    private static JSONArray statesJSON;
-
-    public TargetAutomaton(JSONObject automaton) {
-        this.alphabet = (JSONArray) automaton.get("alphabet");
-        this.statesJSON = (JSONArray) automaton.get("states");
-        this.initialStateId = (Long) automaton.get("initialState");
-    }
 
     public TargetAutomaton(JSONObject automaton, JSONArray alphabet, JSONArray states, Long initialState) {
         this.initialStateId = (Long) automaton.get("initialState");
-        this.alphabet = (JSONArray) automaton.get("alphabet");
         Iterator<JSONObject> iterator = states.iterator();
         while(iterator.hasNext()) {
             State state = new State(iterator.next());
             this.states.put(state.getId(), state);
         }
+        letters = (String[]) alphabet.stream().toArray(String[]::new);
         this.initialState = this.states.get(initialStateId);
         for(State s: this.states.values()) {
             for(Map.Entry<String, Long> sigma : s.getIndexTransitions().entrySet())
@@ -75,40 +60,6 @@ public final class TargetAutomaton extends Automaton {
         }
         return run;
     }
-//
-//    public List<State> getRun(String [] infiniteWordPrefix) {
-//        List<State> run = List.of(initialState);
-//        State currentState = initialState;
-//        for(String letter : infiniteWordPrefix) {
-//            run.add(currentState.getStateTransitions().get(letter));
-//        }
-//        return run;
-//    }
-
-    ///maybe not public - protected and then Teacher.java could extend it
-
-//    @Override
-//    public static Long getInitialStateId() {
-//        return initialStateId;
-//    }
-//
-//    public static State getInitialState() {
-//        return initialState;
-//    }
-
-    public static JSONArray getAlphabet() {
-        return alphabet;
-    }
-
-//    public static LinkedHashMap<Long, State> getStates() {
-//        return states;
-//    }
-
-    public static JSONArray getStatesJSON() {
-        return statesJSON;
-    }
-
-    //////////
 
     public int getSize() {
         return states.size();
@@ -125,7 +76,7 @@ public final class TargetAutomaton extends Automaton {
         sb.append("\ninitialStateId: ");
         sb.append(initialStateId);
         sb.append("\nalphabet: ");
-        sb.append(alphabet);
+        sb.append(letters);
         sb.append("\nstates: \n");
         sb.append(states);
         return sb.toString();

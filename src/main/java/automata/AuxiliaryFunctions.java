@@ -24,24 +24,23 @@ public class AuxiliaryFunctions {
 //        }
 //    }
 
-    public static List<ProductState> getReachableStates(P<Automaton, Automaton> productAutomaton) {
+    public static List<ProductState> getReachableStates(ProductAutomaton productAutomaton) {
         List<ProductState> reachableStates = new LinkedList<>();
-        ProductState initialStatePair = new ProductState(productAutomaton.first.getInitialState(), productAutomaton.second.getInitialState());
-        dfs(productAutomaton, initialStatePair, reachableStates);
+        dfs(productAutomaton, productAutomaton.initialState, reachableStates);
         for(ProductState s : reachableStates) {
-            s.setVisited(false);//po co to???
+            s.setVisited(false);
+            s.setReachable(true);
         }
         return reachableStates;
     }
 
-    public static void dfs(P<Automaton, Automaton> productAutomaton, ProductState currentState, List<ProductState> reachableStates) {
+    public static void dfs(ProductAutomaton productAutomaton, ProductState currentState, List<ProductState> reachableStates) {
         if(currentState.isVisited()) return;
         currentState.setVisited(true);
         reachableStates.add(currentState);
-        for (Map.Entry<String, ProductState> descendant : currentState.getDescendants().entrySet()) {
-            descendant.getValue().first.setPredecessor(new Pair(descendant.getKey(), currentState.first.getId()));
-            descendant.getValue().second.setPredecessor(new Pair(descendant.getKey(), currentState.second.getId()));
-            dfs(productAutomaton, descendant.getValue(), reachableStates);
+        for (Map.Entry<String, ProductState> transition : currentState.getStateTransitions().entrySet()) {
+            transition.getValue().setPredecessor(new P(transition.getKey(), currentState));
+            dfs(productAutomaton, transition.getValue(), reachableStates);
         }
     }
 
@@ -68,35 +67,35 @@ public class AuxiliaryFunctions {
 //        return true;
 //    }
 
-    public static Boolean checkAllCycles(P<Automaton, Automaton> productAutomaton, ProductState initialState, ProductState currentState, Stack<String> currentCycle) {
-        currentState.first.setVisited(true);
-        currentState.second.setVisited(true);
-        for(Map.Entry<String, State> transition : currentState.first.getStateTransitions().entrySet()) {
+    public static Boolean checkAllCycles(ProductAutomaton productAutomaton, ProductState initialState, ProductState currentState, Stack<String> currentCycle) {
+//        currentState.first.setVisited(true);
+//        currentState.second.setVisited(true);//??
+        currentState.setVisited(true);
+//        for(Map.Entry<String, State> transition : currentState.first.getStateTransitions().entrySet()) {
+        for(Map.Entry<String, ProductState> transition : currentState.getStateTransitions().entrySet()) {
             String letter = transition.getKey();
-            ProductState nextState = new ProductState(transition.getValue(),
-                    currentState.second.getStateTransitions().get(letter));
-
+            ProductState nextState = transition.getValue();
+//            ProductState nextState = new ProductState(transition.getValue(),
+//                    currentState.second.getStateTransitions().get(letter));
             if(nextState == initialState) {
                 if (!checkCycle(productAutomaton, initialState.second, currentCycle)) {
                     return false;
                 }
+                continue;
             }
 
-            if(nextState == currentState || (nextState.first.isVisited() && nextState.first.isVisited())) continue;
+            if(nextState == currentState || nextState.isVisited()) continue;
 
             currentCycle.push(letter);
             if(!checkAllCycles(productAutomaton, initialState, nextState, currentCycle)) return false;
         }
-        currentCycle.pop();
+        if(!currentCycle.empty()) currentCycle.pop();
         return true;
     }
 
-//    public static Boolean checkCycle(Automaton automaton, Stack<Pair> cycle) {
-//        return true;
-//    }
-
-    public static Boolean checkCycle(P<Automaton, Automaton> productAutomaton, State initialState, Stack<String> cycle) {
+    public static Boolean checkCycle(ProductAutomaton productAutomaton, State initialState, Stack<String> cycle) {
         State currentState = initialState;
+        if(currentState.isAccepting()) return true;
         for(String letter : cycle) {//tylko w jakiej kolejnosic iteruje sie po stosie???
             if(currentState.isAccepting()) return true;
             currentState = currentState.getStateTransitions().get(letter);

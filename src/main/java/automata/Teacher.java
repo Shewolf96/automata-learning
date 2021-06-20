@@ -13,38 +13,43 @@ public class Teacher {
 
     public InfiniteWordGenerator equivalenceQuery(LearningAutomaton learningAutomaton)
     {
-        P<Automaton, Automaton> productAutomaton = new P(targetAutomaton, learningAutomaton);
+        InfiniteWordGenerator differingWord = automataInclusion(targetAutomaton, learningAutomaton);
+        if(differingWord.isEmpty()) differingWord = automataInclusion(learningAutomaton, targetAutomaton);
+        return differingWord;
+    }
+
+    private InfiniteWordGenerator automataInclusion(Automaton automaton1, Automaton automaton2) {
+        ProductAutomaton productAutomaton = new ProductAutomaton(automaton1, automaton2);
         List<ProductState> reachableProductStates = AuxiliaryFunctions.getReachableStates(productAutomaton);
 
         for(ProductState initialState : reachableProductStates) {
-            targetAutomaton.getStateCollection().stream().forEach(s -> s.setVisited(false));
+            automaton1.getStateCollection().stream().forEach(s -> s.setVisited(false));
             Stack cycle = new Stack<>();
-            if(initialState.first.isAccepting() && !AuxiliaryFunctions.checkAllCycles(new P(targetAutomaton, learningAutomaton), initialState, initialState, cycle))
-                return AuxiliaryFunctions.getDivergingWord(targetAutomaton, initialState.first, cycle);
+            if(initialState.first.isAccepting() && !AuxiliaryFunctions.checkAllCycles(productAutomaton, initialState, initialState, cycle))
+                return AuxiliaryFunctions.getDivergingWord(automaton1, initialState.first, cycle);
         }
-        //no i ofc sprawdź jeszcze w drugą stronę
         return new InfiniteWordGenerator();
     }
 
-    public Integer getLoopIndexUpperBound(InfiniteWordGenerator infiniteWord) {
+    private Integer getLoopIndexUpperBound(InfiniteWordGenerator infiniteWord) {
         int N = targetAutomaton.getSize();
         int cycleLength = infiniteWord.getV().length;
         return infiniteWord.getW().length + 2 * N * cycleLength;
     }
 
-    public List<Pair> getRun(InfiniteWordGenerator infiniteWord, int loopIndexUpperBound) {
+    private List<Pair> getRun(InfiniteWordGenerator infiniteWord, int loopIndexUpperBound) {
         String [] prefix = infiniteWord.getPrefix(Long.valueOf(loopIndexUpperBound));
         return targetAutomaton.getLetterStateRun(prefix);
     }
 
-    public Integer getLoopSize(InfiniteWordGenerator infiniteWord, List<Pair> run, int loopIndexUpperBound) {
+    private Integer getLoopSize(InfiniteWordGenerator infiniteWord, List<Pair> run, int loopIndexUpperBound) {
         int loopSize = infiniteWord.getV().length;
         while (!run.subList(loopIndexUpperBound - loopSize, loopIndexUpperBound).equals(run.subList(loopIndexUpperBound - 2 * loopSize, loopIndexUpperBound - loopSize)))
             loopSize += infiniteWord.getV().length;
         return loopSize;
     }
 
-    public Integer getLoopIndex(List<Pair> run, int loopSize) {
+    private Integer getLoopIndex(List<Pair> run, int loopSize) {
         int loopIndex = 0;
         while (!run.subList(loopIndex, loopIndex + loopSize).equals(run.subList(loopIndex + loopSize, loopIndex + 2 * loopSize))) {
             loopIndex += 1;
