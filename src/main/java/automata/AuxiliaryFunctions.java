@@ -39,7 +39,9 @@ public class AuxiliaryFunctions {
         currentState.setVisited(true);
         reachableStates.add(currentState);
         for (Map.Entry<String, ProductState> transition : currentState.getStateTransitions().entrySet()) {
-            transition.getValue().setPredecessor(new P(transition.getKey(), currentState));
+            ProductState nextState = transition.getValue();
+            if(nextState.getPredecessor() == null) nextState.setPredecessor(new P(transition.getKey(), currentState));
+//            transition.getValue().setPredecessor(new P(transition.getKey(), currentState));
             dfs(productAutomaton, transition.getValue(), reachableStates);
         }
     }
@@ -68,19 +70,16 @@ public class AuxiliaryFunctions {
 //    }
 
     public static Boolean checkAllCycles(ProductAutomaton productAutomaton, ProductState initialState, ProductState currentState, Stack<String> currentCycle) {
-//        currentState.first.setVisited(true);
-//        currentState.second.setVisited(true);//??
         currentState.setVisited(true);
-//        for(Map.Entry<String, State> transition : currentState.first.getStateTransitions().entrySet()) {
         for(Map.Entry<String, ProductState> transition : currentState.getStateTransitions().entrySet()) {
             String letter = transition.getKey();
             ProductState nextState = transition.getValue();
-//            ProductState nextState = new ProductState(transition.getValue(),
-//                    currentState.second.getStateTransitions().get(letter));
             if(nextState == initialState) {
+                currentCycle.push(letter);
                 if (!checkCycle(productAutomaton, initialState.second, currentCycle)) {
                     return false;
                 }
+                currentCycle.pop();
                 continue;
             }
 
@@ -91,28 +90,26 @@ public class AuxiliaryFunctions {
         }
         if(!currentCycle.empty()) currentCycle.pop();
         return true;
+        //        productAutomaton.productStates.values().stream().filter(p -> p.isReachable()).collect(Collectors.toList())
     }
 
     public static Boolean checkCycle(ProductAutomaton productAutomaton, State initialState, Stack<String> cycle) {
         State currentState = initialState;
-        if(currentState.isAccepting()) return true;
-        for(String letter : cycle) {//tylko w jakiej kolejnosic iteruje sie po stosie???
+        for(String letter : cycle) {
             if(currentState.isAccepting()) return true;
             currentState = currentState.getStateTransitions().get(letter);
         }
         return false;
     }
 
-    public static InfiniteWordGenerator getDivergingWord(Automaton automaton, State currentState, Stack<String> cycle) {
+    public static InfiniteWordGenerator getDivergingWord(Automaton automaton, ProductState currentState, Stack<String> cycle) {
         List<String> reversedPrefix = new LinkedList<>();
-        List<String> reversedCycle = cycle.stream().collect(Collectors.toList());
-        while(currentState != automaton.getInitialState()) {
-            reversedPrefix.add(currentState.getPredecessor().getLetter());
+        while(currentState.first != automaton.getInitialState()) {
+            reversedPrefix.add(currentState.getPredecessor().first);
+            currentState = currentState.getPredecessor().second;
         }
-
-        Collections.reverse(reversedCycle);
         Collections.reverse(reversedPrefix);
-        return new InfiniteWordGenerator(reversedPrefix, reversedCycle);
+        return new InfiniteWordGenerator(reversedPrefix, cycle.stream().collect(Collectors.toList()));
     }
 
 

@@ -1,7 +1,6 @@
 package automata;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.function.BiFunction;
 

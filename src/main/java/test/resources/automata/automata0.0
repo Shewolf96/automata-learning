@@ -1,0 +1,21 @@
+{"automata":{
+    "alphabet": ["a"],
+    "initialState": 0,
+    "states": [
+        {
+            "id": 0,
+            "accepting": false
+            "transitions": {
+                "a": 1
+            },
+        },
+        {
+            "id": 1,
+            "accepting": true
+            "transitions": {
+                "a": 0
+            }
+        }
+    ]
+}
+}

@@ -23,10 +23,10 @@ public class Teacher {
         List<ProductState> reachableProductStates = AuxiliaryFunctions.getReachableStates(productAutomaton);
 
         for(ProductState initialState : reachableProductStates) {
-            automaton1.getStateCollection().stream().forEach(s -> s.setVisited(false));
+            reachableProductStates.stream().forEach(s -> s.setVisited(false));
             Stack cycle = new Stack<>();
-            if(initialState.first.isAccepting() && !AuxiliaryFunctions.checkAllCycles(productAutomaton, initialState, initialState, cycle))
-                return AuxiliaryFunctions.getDivergingWord(automaton1, initialState.first, cycle);
+            if(initialState.onlyFirstAccepting() && !AuxiliaryFunctions.checkAllCycles(productAutomaton, initialState, initialState, cycle))//todo: don't even go there if initialState.second.isAccepting()
+                return AuxiliaryFunctions.getDivergingWord(automaton1, initialState, cycle);//todo: make sure that in (w,v) v is the shortest possible word
         }
         return new InfiniteWordGenerator();
     }
@@ -62,7 +62,7 @@ public class Teacher {
         int loopIndexUpperBound = getLoopIndexUpperBound(infiniteWord);
         List<Pair> run = getRun(infiniteWord, loopIndexUpperBound);
         int loopSize = getLoopSize(infiniteWord, run, loopIndexUpperBound);
-        return getLoopIndex(run, loopSize);
+        return getLoopIndex(run, loopSize);//todo: what about loop starting straight away? We get result 1 (maybe should be 0?)
     }
 
     public Boolean membershipQuery(InfiniteWordGenerator infiniteWord)

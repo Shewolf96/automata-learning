@@ -41,4 +41,8 @@ public class ProductState {
     public Collection<ProductState> getDescendants() {
         return stateTransitions.values();
     }
+
+    public Boolean onlyFirstAccepting() {
+        return first.isAccepting() && !second.isAccepting();
+    }
 }
