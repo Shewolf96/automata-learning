@@ -1,0 +1,55 @@
+{"automata":{
+    "alphabet": ["a"],
+    "initialState": 0,
+    "states": [
+        {
+            "id": 0,
+            "accepting": true
+            "transitions": {
+                "a": 1,
+                "b": 1
+            },
+        },
+        {
+            "id": 1,
+            "accepting": false
+            "transitions": {
+                "a": 0,
+                "b": 2
+            },
+        },
+        {
+            "id": 2,
+            "accepting": false
+            "transitions": {
+                "a": 1,
+                "b": 3
+            },
+        },
+        {
+            "id": 3,
+            "accepting": false
+            "transitions": {
+                "a": 1,
+                "b": 4
+            },
+        },
+        {
+            "id": 4,
+            "accepting": false
+            "transitions": {
+                "a": 1,
+                "b": 5
+            },
+        },
+        {
+            "id": 5,
+            "accepting": false
+            "transitions": {
+                "a": 5,
+                "b": 5
+            },
+        },
+    ]
+}
+}

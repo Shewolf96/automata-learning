@@ -8,4 +8,16 @@ public class P<T1, T2> {
         this.first = first;
         this.second = second;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof P)) {
+            return false;
+        }
+        P p = (P) o;
+        return p.first.equals(first) && p.second.equals(second);
+    }
 }

@@ -4,9 +4,9 @@
     "states": [
         {
             "id": 0,
-            "accepting": false
+            "accepting": true
             "transitions": {
-                "a": 0,
+                "a": 3,
                 "b": 1
             },
         },
@@ -14,7 +14,7 @@
             "id": 1,
             "accepting": true
             "transitions": {
-                "a": 0,
+                "a": 3,
                 "b": 2
             },
         },
@@ -22,10 +22,18 @@
             "id": 2,
             "accepting": true
             "transitions": {
-                "a": 0,
+                "a": 3,
                 "b": 2
             },
-        }
+        },
+        {
+            "id": 3,
+            "accepting": false
+            "transitions": {
+                "a": 3,
+                "b": 3
+            },
+        },
     ]
 }
 }

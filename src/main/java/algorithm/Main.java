@@ -15,8 +15,8 @@ public class Main {
 
         JSONParser parser = new JSONParser();
         try {
-            Object obj = parser.parse(new FileReader("src/main/java/test/resources/automata/automata3.1"));
-            Object obj2 = parser.parse(new FileReader("src/main/java/test/resources/automata/automata3.2"));
+            Object obj = parser.parse(new FileReader("src/main/java/test/resources/automata/automata6.2"));
+            Object obj2 = parser.parse(new FileReader("src/main/java/test/resources/automata/automata6.1"));
 
             // A JSON object. Key value pairs are unordered. JSONObject supports java.util.Map interface.
             JSONObject jsonObject = (JSONObject) obj;
@@ -54,8 +54,8 @@ public class Main {
             LearningAutomaton automaton = new LearningAutomaton(automata2, alphabet2, states2, iniitialState2);
             teacher.equivalenceQuery(automaton);
 
-            String[] w = {"b", "b"};
-            String[] v = {"a", "b", "b"};
+            String[] w = {"a"};
+            String[] v = {"a"};
             InfiniteWordGenerator infiniteWord = new InfiniteWordGenerator(w,v);
             teacher.loopIndexQuery(infiniteWord);
 

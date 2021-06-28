@@ -25,8 +25,8 @@ public class Teacher {
         for(ProductState initialState : reachableProductStates) {
             reachableProductStates.stream().forEach(s -> s.setVisited(false));
             Stack cycle = new Stack<>();
-            if(initialState.onlyFirstAccepting() && !AuxiliaryFunctions.checkAllCycles(productAutomaton, initialState, initialState, cycle))//todo: don't even go there if initialState.second.isAccepting()
-                return AuxiliaryFunctions.getDivergingWord(automaton1, initialState, cycle);//todo: make sure that in (w,v) v is the shortest possible word
+            if(initialState.onlyFirstAccepting() && !AuxiliaryFunctions.checkAllCycles(initialState, initialState, cycle))
+                return AuxiliaryFunctions.getDivergingWord(productAutomaton, initialState, cycle);//todo: make sure that in (w,v) v is the shortest possible word
         }
         return new InfiniteWordGenerator();
     }

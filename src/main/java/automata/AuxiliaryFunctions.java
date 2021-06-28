@@ -41,7 +41,6 @@ public class AuxiliaryFunctions {
         for (Map.Entry<String, ProductState> transition : currentState.getStateTransitions().entrySet()) {
             ProductState nextState = transition.getValue();
             if(nextState.getPredecessor() == null) nextState.setPredecessor(new P(transition.getKey(), currentState));
-//            transition.getValue().setPredecessor(new P(transition.getKey(), currentState));
             dfs(productAutomaton, transition.getValue(), reachableStates);
         }
     }
@@ -69,14 +68,14 @@ public class AuxiliaryFunctions {
 //        return true;
 //    }
 
-    public static Boolean checkAllCycles(ProductAutomaton productAutomaton, ProductState initialState, ProductState currentState, Stack<String> currentCycle) {
+    public static Boolean checkAllCycles(ProductState initialState, ProductState currentState, Stack<String> currentCycle) {
         currentState.setVisited(true);
         for(Map.Entry<String, ProductState> transition : currentState.getStateTransitions().entrySet()) {
             String letter = transition.getKey();
             ProductState nextState = transition.getValue();
             if(nextState == initialState) {
                 currentCycle.push(letter);
-                if (!checkCycle(productAutomaton, initialState.second, currentCycle)) {
+                if (!checkCycle(initialState.second, currentCycle)) {
                     return false;
                 }
                 currentCycle.pop();
@@ -86,14 +85,13 @@ public class AuxiliaryFunctions {
             if(nextState == currentState || nextState.isVisited()) continue;
 
             currentCycle.push(letter);
-            if(!checkAllCycles(productAutomaton, initialState, nextState, currentCycle)) return false;
+            if(!checkAllCycles(initialState, nextState, currentCycle)) return false;
         }
         if(!currentCycle.empty()) currentCycle.pop();
         return true;
-        //        productAutomaton.productStates.values().stream().filter(p -> p.isReachable()).collect(Collectors.toList())
     }
 
-    public static Boolean checkCycle(ProductAutomaton productAutomaton, State initialState, Stack<String> cycle) {
+    public static Boolean checkCycle(State initialState, Stack<String> cycle) {
         State currentState = initialState;
         for(String letter : cycle) {
             if(currentState.isAccepting()) return true;
@@ -102,9 +100,9 @@ public class AuxiliaryFunctions {
         return false;
     }
 
-    public static InfiniteWordGenerator getDivergingWord(Automaton automaton, ProductState currentState, Stack<String> cycle) {
+    public static InfiniteWordGenerator getDivergingWord(ProductAutomaton automaton, ProductState currentState, Stack<String> cycle) {
         List<String> reversedPrefix = new LinkedList<>();
-        while(currentState.first != automaton.getInitialState()) {
+        while(currentState != automaton.getInitialState()) {
             reversedPrefix.add(currentState.getPredecessor().first);
             currentState = currentState.getPredecessor().second;
         }

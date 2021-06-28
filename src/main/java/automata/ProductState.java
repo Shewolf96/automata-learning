@@ -4,7 +4,6 @@ import java.util.*;
 
 public class ProductState {
 
-//    public P<State, State> productState;
     private Boolean visited = false;
     private Boolean reachable = false;
     private P<String, ProductState> predecessor;
@@ -12,12 +11,6 @@ public class ProductState {
 
     public State first;
     public State second;
-
-//    public ProductState(P<State, State> state) {
-//        this.productState = state;
-//        this.first = state.first;
-//        this.second = state.second;
-//    }
 
     public ProductState(State s1, State s2) {
         this.first = s1;
