@@ -5,11 +5,11 @@ import automata.P;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 public class StateFunction {
 
     private Long id;
-//    private State state;
     private HashSet<InfiniteWordGenerator> C;
     private HashMap<InfiniteWordGenerator, P<Boolean, Long>> definingFunction;
     private String[] selector;
@@ -24,7 +24,14 @@ public class StateFunction {
         this.C = C;
         this.definingFunction = definingFunction;
         this.selector = selector;
-        this.accepting = accepting;
+    }
+
+    public Boolean isOnAnyAcceptingLoop() {
+        HashSet<InfiniteWordGenerator> emptyPrefixWords = C.stream().filter(w -> (w.getW().length == 0)).collect(Collectors.toCollection(HashSet::new));
+        for(InfiniteWordGenerator infWord : emptyPrefixWords) {
+            if(!definingFunction.get(infWord).first && definingFunction.get(infWord).second == 0) return false;
+        }
+        return true;
     }
 
     public Long getId() { return id; }

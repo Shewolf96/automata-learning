@@ -1,5 +1,6 @@
 package automata;
 
+import algorithm.GenerateAutomaton;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -26,6 +27,11 @@ public class LearningAutomaton extends Automaton {
 
     public LearningAutomaton(JSONArray alphabet) {
         letters = (String[]) alphabet.stream().toArray(String[]::new);
+    }
+
+    public LearningAutomaton(GenerateAutomaton GA) {
+//        letters = (String[]) alphabet.stream().toArray(String[]::new);
+        //todo ....
     }
 
     public State transition(InfiniteWordGenerator infiniteWord, Long prefix) {

@@ -55,4 +55,8 @@ public class InfiniteWordGenerator {
     public Boolean isEmpty() {
         return (v == null || v.length == 0);
     }
+
+    public Integer length() {
+        return w.length + v.length;
+    }
 }

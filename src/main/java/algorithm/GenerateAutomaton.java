@@ -35,19 +35,13 @@ public class GenerateAutomaton {
         transitions = new MultiKeyMap();
         initialState = new StateFunction(id.next());
         states.put(initialState.getId(), initialState);
-        queue = new LinkedList<>();
-        queue.add(initialState);
         addSuccessors();
+        computeAcceptingStates();
     }
 
-//        for any
-//        state q and letter a such that the value of δ(q, a) is not set, take the
-//        selector w q and compute q a such that for all (r, c) ∈ C we have
-//        q a (r, c) =(T. VALUE (warc ω ), ∗ T (wa, r, c)). If q a is in the set of
-//        states, then δ(q, a) .. = q a . Otherwise, add q a to the set of states, set
-//        δ(q, a) .. = q a and w q a .. = wa.
-
     private void addSuccessors() {
+        queue = new LinkedList<>();
+        queue.add(initialState);
         while(!queue.isEmpty()) {
             StateFunction state = queue.remove();
             state.setVisited(true);
@@ -73,20 +67,36 @@ public class GenerateAutomaton {
     }
     private StateFunction computeStateFunction(String[] selector) {
         HashMap<InfiniteWordGenerator, P<Boolean, Long>> definingFunction = new HashMap<>();
-        C.stream().forEach(infWord -> definingFunction.put(infWord, new P(teacher.membershipQuery(infWord), teacher.loopIndexQuery(infWord))));
-        //todo: compute if accepting (probably after the whole bfs)
+        C.stream().forEach(infWord -> definingFunction.put(infWord,
+                new P(teacher.membershipQuery(infWord), teacher.loopIndexQuery(infWord))));//change loopIndexQuery to the one with prefix
         return new StateFunction(id.next(), definingFunction, selector, C);
     }
 
-    //todo:
-    //procedure GENERATE AUTOMATON (C, T)
-//    A := (Σ, {q 0 }, q 0 , {}, {})
-//            while A 6 = ADD SUCCESSORS (A) do
-//                A := ADD SUCCESSORS (A)
-//    A := COMPUTE ACCEPTING STATES (A)
-//return A
+    private void computeAcceptingStates() {
+        states.values().stream().filter(StateFunction::isOnAnyAcceptingLoop).forEach(s -> s.setVisited(true));
+    }
 
-    //czyli tutaj głównie to add_successors - czyli bfs po stano-funkcjach
-    //no i potem które są akceptujące (dopytaj JMi jak to jest z tym loopIndex)
+    public Teacher getTeacher() { return teacher; }
 
+    public void setTeacher(Teacher teacher) { this.teacher = teacher; }
+
+    public static HashSet<InfiniteWordGenerator> getC() { return C; }
+
+    public static void setC(HashSet<InfiniteWordGenerator> c) { C = c; }
+
+    public static HashMap<Long, StateFunction> getStates() { return states; }
+
+    public static void setStates(HashMap<Long, StateFunction> states) { GenerateAutomaton.states = states; }
+
+    public static List<String> getLetters() { return letters; }
+
+    public static void setLetters(List<String> letters) { GenerateAutomaton.letters = letters; }
+
+    public static StateFunction getInitialState() { return initialState; }
+
+    public static void setInitialState(StateFunction initialState) { GenerateAutomaton.initialState = initialState; }
+
+    public static MultiKeyMap getTransitions() { return transitions; }
+
+    public static void setTransitions(MultiKeyMap transitions) { GenerateAutomaton.transitions = transitions; }
 }
