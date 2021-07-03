@@ -59,6 +59,8 @@ public class Main {
             InfiniteWordGenerator infiniteWord = new InfiniteWordGenerator(w,v);
             teacher.loopIndexQuery(infiniteWord);
 
+            Algorithm.learn(targetAutomaton);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

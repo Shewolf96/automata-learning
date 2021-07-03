@@ -32,8 +32,7 @@ public class Saturate {
 
             C.addAll(getClosure(C1));
             GenerateAutomaton GA = new GenerateAutomaton(C, teacher);
-            LearningAutomaton LA = new LearningAutomaton(GA);
-            isAccepting = LA.transition(witnessWord, i.longValue()).isAccepting();//to simplify
+            isAccepting = GA.transition(witnessWord, i.longValue()).isAccepting();
         } while (teacher.membershipQuery(witnessWord) == isAccepting);
         return C;
     }

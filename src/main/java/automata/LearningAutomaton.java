@@ -30,8 +30,14 @@ public class LearningAutomaton extends Automaton {
     }
 
     public LearningAutomaton(GenerateAutomaton GA) {
-//        letters = (String[]) alphabet.stream().toArray(String[]::new);
-        //todo ....
+        this.letters = GA.getLetters().toArray(String[]::new);
+        GA.getStates().forEach((letter, state) -> this.states.put(letter, new State(state)));
+        this.initialStateId = GA.initialState.getId();
+        this.initialState = states.get(initialStateId);
+        states.values().forEach(
+                state -> state.getIndexTransitions().forEach(
+                        (letter, stateId) ->
+                                state.getStateTransitions().put(letter, states.get(stateId))));// xxd to chyba wcale nie jest czytelne
     }
 
     public State transition(InfiniteWordGenerator infiniteWord, Long prefix) {
@@ -46,7 +52,6 @@ public class LearningAutomaton extends Automaton {
         return currentState;
     }
 
-    @Override
     public <B> B foldRight(B z, BiFunction<?, B, B> f) {
         return null;
     }

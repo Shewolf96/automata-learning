@@ -1,7 +1,9 @@
 package automata;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
+import java.util.stream.Stream;
 
 public class Teacher {
 
@@ -26,7 +28,7 @@ public class Teacher {
             reachableProductStates.stream().forEach(s -> s.setVisited(false));
             Stack cycle = new Stack<>();
             if(initialState.onlyFirstAccepting() && !AuxiliaryFunctions.checkAllCycles(initialState, initialState, cycle))
-                return AuxiliaryFunctions.getDivergingWord(productAutomaton, initialState, cycle);//todo: make sure that in (w,v) v is the shortest possible word
+                return AuxiliaryFunctions.getDivergingWord(productAutomaton, initialState, cycle);
         }
         return new InfiniteWordGenerator();
     }
@@ -65,6 +67,19 @@ public class Teacher {
         return getLoopIndex(run, loopSize);//todo: what about loop starting straight away? We get result 1 (maybe should be 0?)
     }
 
+    public Integer loopIndexQuery(String[] prefixWord, InfiniteWordGenerator infiniteWord)
+    {
+        infiniteWord.setW(
+                Stream.concat(
+                    Arrays.stream(prefixWord),
+                    Arrays.stream(infiniteWord.getW()))
+                .toArray(String[]::new));
+        int loopIndexUpperBound = getLoopIndexUpperBound(infiniteWord);
+        List<Pair> run = getRun(infiniteWord, loopIndexUpperBound);
+        int loopSize = getLoopSize(infiniteWord, run, loopIndexUpperBound);
+        return Math.max(0, getLoopIndex(run, loopSize) - prefixWord.length);//todo: problem as described above
+    }
+
     public Boolean membershipQuery(InfiniteWordGenerator infiniteWord)
     {
         int loopIndexUpperBound = getLoopIndexUpperBound(infiniteWord);
@@ -77,6 +92,10 @@ public class Teacher {
                 return true;
         }
         return false;
+    }
+
+    public List<String> getLetters() {
+        return List.of(targetAutomaton.letters);
     }
 
 }

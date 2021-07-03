@@ -31,6 +31,7 @@ public class GenerateAutomaton {
     public GenerateAutomaton(HashSet<InfiniteWordGenerator> C, Teacher teacher) {
         this.teacher = teacher;
         this.C = C;
+        this.letters = teacher.getLetters();
         states = new HashMap<>();
         transitions = new MultiKeyMap();
         initialState = new StateFunction(id.next());
@@ -48,6 +49,7 @@ public class GenerateAutomaton {
             for(String letter : letters) {
                 if(transitions.get(state, letter) == null) {
                     String[] nextSelector = Arrays.copyOf(state.getSelector(), state.getSelector().length + 1);
+                    nextSelector[nextSelector.length - 1] = letter;
                     StateFunction q = computeStateFunction(nextSelector);
                     Optional<StateFunction> existingState = states.values().stream().filter(a -> a.equals(q)).findFirst();
                     if(existingState.isPresent()) {
@@ -67,13 +69,25 @@ public class GenerateAutomaton {
     }
     private StateFunction computeStateFunction(String[] selector) {
         HashMap<InfiniteWordGenerator, P<Boolean, Long>> definingFunction = new HashMap<>();
-        C.stream().forEach(infWord -> definingFunction.put(infWord,
-                new P(teacher.membershipQuery(infWord), teacher.loopIndexQuery(infWord))));//change loopIndexQuery to the one with prefix
+        C.stream().forEach(infWord -> definingFunction.put(
+                infWord, new P(teacher.membershipQuery(infWord), teacher.loopIndexQuery(selector, infWord))));
         return new StateFunction(id.next(), definingFunction, selector, C);
     }
 
     private void computeAcceptingStates() {
-        states.values().stream().filter(StateFunction::isOnAnyAcceptingLoop).forEach(s -> s.setVisited(true));
+        states.values().stream().filter(StateFunction::isOnAnyAcceptingLoop).forEach(s -> s.setAccepting(true));
+    }
+
+    public StateFunction transition(InfiniteWordGenerator infiniteWord, Long prefix) {
+        return this.transition(this.initialState, infiniteWord, prefix);
+    }
+
+    public StateFunction transition(StateFunction initialState, InfiniteWordGenerator infWord, Long prefix) {
+        StateFunction currentState = initialState;
+        for(String letter : infWord.getPrefix(prefix)) {
+            currentState = currentState.getDescendants().get(letter);
+        }
+        return currentState;
     }
 
     public Teacher getTeacher() { return teacher; }

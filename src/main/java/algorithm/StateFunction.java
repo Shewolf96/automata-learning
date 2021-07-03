@@ -10,14 +10,17 @@ import java.util.stream.Collectors;
 public class StateFunction {
 
     private Long id;
-    private HashSet<InfiniteWordGenerator> C;
-    private HashMap<InfiniteWordGenerator, P<Boolean, Long>> definingFunction;
+    private HashSet<InfiniteWordGenerator> C = new HashSet<>();
+    private HashMap<InfiniteWordGenerator, P<Boolean, Long>> definingFunction = new HashMap<>();
     private String[] selector;
     private HashMap<String, StateFunction> descendants = new HashMap<>();
     private Boolean accepting = false;
     private Boolean visited = false;
 
-    public StateFunction(Long id) { this.id = id; }
+    public StateFunction(Long id) {
+        this.id = id;
+        this.selector = new String[]{};
+    }
 
     public StateFunction(Long id, HashMap<InfiniteWordGenerator, P<Boolean, Long>> definingFunction, String[] selector, HashSet<InfiniteWordGenerator> C) {
         this.id = id;
@@ -52,7 +55,7 @@ public class StateFunction {
 
     public Boolean isAccepting() { return accepting; }
 
-    public void setAccepting(Boolean accepting) { accepting = accepting; }
+    public void setAccepting(Boolean accepting) { this.accepting = accepting; }
 
     public HashMap<String, StateFunction> getDescendants() { return descendants; }
 

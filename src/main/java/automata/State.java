@@ -1,5 +1,6 @@
 package automata;
 
+import algorithm.StateFunction;
 import org.json.simple.JSONObject;
 
 import java.util.*;
@@ -21,6 +22,12 @@ public class State {
             Long value = (Long) transitions.get(key);
             indexTransitions.put((String) key, value);
         });
+    }
+
+    public State(StateFunction stateFunction) {
+        this.id = stateFunction.getId();
+        this.isAccepting = stateFunction.isAccepting();
+        stateFunction.getDescendants().forEach((letter, descendant) -> this.indexTransitions.put(letter, descendant.getId()));
     }
 
     public Long getId() { return id; }

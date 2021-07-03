@@ -1,5 +1,7 @@
 package automata;
 
+import one.util.streamex.EntryStream;
+import org.apache.commons.collections4.ListUtils;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.util.*;
@@ -107,7 +109,29 @@ public class AuxiliaryFunctions {
             currentState = currentState.getPredecessor().second;
         }
         Collections.reverse(reversedPrefix);
-        return new InfiniteWordGenerator(reversedPrefix, cycle.stream().collect(Collectors.toList()));
+        InfiniteWordGenerator divergingWord = new InfiniteWordGenerator(reversedPrefix, cycle.stream().collect(Collectors.toList()));
+        return findShortestCycle(divergingWord);
+    }
+
+    private static InfiniteWordGenerator findShortestCycle(InfiniteWordGenerator infWord) {
+        List<String> v = infWord.getVAsList();
+        List<Integer> cycleLengths = EntryStream.of(v)
+                .filterValues(letter -> letter.equals(v.get(0)))
+                .keys()
+                .collect(Collectors.toList());
+
+//        cycleLength.forEach(index ->
+//                ListUtils.partition(cycle, cycle.indexOf(cycle.get(0)))
+//                        .forEach(list ->
+//                                list.equals(cycle.subList(0, index - 1))));
+
+        for(Integer index : cycleLengths) {
+            List<String> cycle = v.subList(0, index);
+            List<List<String>> sublists = ListUtils.partition(cycle, index);
+            if(sublists.stream().allMatch(sublist -> sublist.equals(cycle)))
+                return new InfiniteWordGenerator(infWord.getWAsList(), cycle);
+        }
+        return infWord;
     }
 
 
