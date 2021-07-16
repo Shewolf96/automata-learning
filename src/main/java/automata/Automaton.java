@@ -9,7 +9,6 @@ public abstract class Automaton {
     protected Long initialStateId;
     protected State initialState;
     protected String[] letters;
-    public abstract <B> B foldRight(B z, BiFunction<?, B, B> f);
 
     public Collection<State> getStateCollection() {
         return states.values();

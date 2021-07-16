@@ -6,7 +6,6 @@ import org.json.simple.JSONObject;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.function.BiFunction;
 
 public class LearningAutomaton extends Automaton {
 
@@ -37,7 +36,7 @@ public class LearningAutomaton extends Automaton {
         states.values().forEach(
                 state -> state.getIndexTransitions().forEach(
                         (letter, stateId) ->
-                                state.getStateTransitions().put(letter, states.get(stateId))));// xxd to chyba wcale nie jest czytelne
+                                state.getStateTransitions().put(letter, states.get(stateId))));
     }
 
     public State transition(InfiniteWordGenerator infiniteWord, Long prefix) {
@@ -50,10 +49,6 @@ public class LearningAutomaton extends Automaton {
             currentState = currentState.getStateTransitions().get(letter);
         }
         return currentState;
-    }
-
-    public <B> B foldRight(B z, BiFunction<?, B, B> f) {
-        return null;
     }
 
 }

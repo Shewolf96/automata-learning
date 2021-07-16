@@ -9,14 +9,14 @@ public class GenerateAutomaton {
 
     Teacher teacher;
 
-    public static HashSet<InfiniteWordGenerator> C;
-    public static HashMap<Long, StateFunction> states;
-    public static List<String> letters;
-    public static StateFunction initialState;
-    public static MultiKeyMap transitions;
-//    public static MultiKeyMap<P<StateFunction, String>, StateFunction> transitions;
+    public HashSet<InfiniteWordGenerator> C;
+    public HashMap<Long, StateFunction> states;
+    public List<String> letters;
+    public StateFunction initialState;
+    public MultiKeyMap transitions;
+//    public MultiKeyMap<P<StateFunction, String>, StateFunction> transitions;
 
-    private static Queue<StateFunction> queue;
+    private Queue<StateFunction> queue;
 
     private Iterator<Long> id = new Iterator<Long>() {
         private Long currentId = 0l;
@@ -94,23 +94,23 @@ public class GenerateAutomaton {
 
     public void setTeacher(Teacher teacher) { this.teacher = teacher; }
 
-    public static HashSet<InfiniteWordGenerator> getC() { return C; }
+    public HashSet<InfiniteWordGenerator> getC() { return C; }
 
-    public static void setC(HashSet<InfiniteWordGenerator> c) { C = c; }
+    public void setC(HashSet<InfiniteWordGenerator> c) { C = c; }
 
-    public static HashMap<Long, StateFunction> getStates() { return states; }
+    public HashMap<Long, StateFunction> getStates() { return states; }
 
-    public static void setStates(HashMap<Long, StateFunction> states) { GenerateAutomaton.states = states; }
+    public void setStates(HashMap<Long, StateFunction> states) { this.states = states; }
 
-    public static List<String> getLetters() { return letters; }
+    public List<String> getLetters() { return letters; }
 
-    public static void setLetters(List<String> letters) { GenerateAutomaton.letters = letters; }
+    public void setLetters(List<String> letters) { this.letters = letters; }
 
-    public static StateFunction getInitialState() { return initialState; }
+    public StateFunction getInitialState() { return initialState; }
 
-    public static void setInitialState(StateFunction initialState) { GenerateAutomaton.initialState = initialState; }
+    public void setInitialState(StateFunction initialState) { this.initialState = initialState; }
 
-    public static MultiKeyMap getTransitions() { return transitions; }
+    public MultiKeyMap getTransitions() { return transitions; }
 
-    public static void setTransitions(MultiKeyMap transitions) { GenerateAutomaton.transitions = transitions; }
+    public void setTransitions(MultiKeyMap transitions) { this.transitions = transitions; }
 }

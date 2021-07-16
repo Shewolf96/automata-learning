@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Saturate {
 
@@ -16,34 +17,34 @@ public class Saturate {
         String[] divergingWordPrefix = divergingWord.getPrefix(Long.valueOf(loopIndex + divergingWord.getV().length));
 
         String[] w = Arrays.copyOfRange(divergingWordPrefix, 0, loopIndex);
-        String[] v = Arrays.copyOfRange(divergingWordPrefix, loopIndex + 1, divergingWordPrefix.length);//+1?
+        String[] v = Arrays.copyOfRange(divergingWordPrefix, loopIndex, divergingWordPrefix.length);
         InfiniteWordGenerator witnessWord = new InfiniteWordGenerator(w,v);
 
         Integer i = witnessWord.length();
         Boolean isAccepting;
         do {
             i++;
-            String[] witnessWordPrefix = witnessWord.getPrefix(i.longValue());//+/-1?
+            String[] witnessWordPrefix = witnessWord.getPrefix(i.longValue() - 1);
+
             HashSet<InfiniteWordGenerator> C1 = new HashSet<>(C) ;
             C1.add(witnessWord);
-            C1.stream()
-                    .filter(infWord -> infWord.getW().length == 0)
-                    .forEach(infWord -> infWord.setW(witnessWordPrefix));
+            C1 = getClosure(C1).stream().filter(infWord -> infWord.getW().length == 0).collect(Collectors.toCollection(HashSet::new));
+            C1.forEach(infWord -> infWord.setW(witnessWordPrefix));
 
             C.addAll(getClosure(C1));
             GenerateAutomaton GA = new GenerateAutomaton(C, teacher);
             isAccepting = GA.transition(witnessWord, i.longValue()).isAccepting();
-        } while (teacher.membershipQuery(witnessWord) == isAccepting);
-        return C;
+        } while (teacher.membershipQuery(witnessWord) != isAccepting);
+        return C;//maybe return whole GA instead of C - cause later you compute it second time with the same (C, teacher)
     }
 
-    private static HashSet<InfiniteWordGenerator> getClosure(HashSet<InfiniteWordGenerator> C) {
+    protected static HashSet<InfiniteWordGenerator> getClosure(HashSet<InfiniteWordGenerator> C) {
         HashSet<InfiniteWordGenerator> closure = new HashSet<>();
         C.stream().forEach(infWord -> closure.addAll(getRotations(infWord)));
         return closure;
     }
 
-    private static HashSet<InfiniteWordGenerator> getRotations(InfiniteWordGenerator infWord) {
+    protected static HashSet<InfiniteWordGenerator> getRotations(InfiniteWordGenerator infWord) {
         HashSet<InfiniteWordGenerator> rotations = new HashSet<>();
         List<String> infWordPrefix = infWord.getWAsList();
         List<String> infWordCycle = infWord.getVAsList();

@@ -46,7 +46,7 @@ public class Teacher {
 
     private Integer getLoopSize(InfiniteWordGenerator infiniteWord, List<Pair> run, int loopIndexUpperBound) {
         int loopSize = infiniteWord.getV().length;
-        while (!run.subList(loopIndexUpperBound - loopSize, loopIndexUpperBound).equals(run.subList(loopIndexUpperBound - 2 * loopSize, loopIndexUpperBound - loopSize)))
+        while (!run.subList(loopIndexUpperBound - loopSize + 1, loopIndexUpperBound + 1).equals(run.subList(loopIndexUpperBound - 2 * loopSize + 1, loopIndexUpperBound - loopSize + 1)))
             loopSize += infiniteWord.getV().length;
         return loopSize;
     }
@@ -67,17 +67,17 @@ public class Teacher {
         return getLoopIndex(run, loopSize);//todo: what about loop starting straight away? We get result 1 (maybe should be 0?)
     }
 
-    public Integer loopIndexQuery(String[] prefixWord, InfiniteWordGenerator infiniteWord)
+    public Integer loopIndexQuery(String[] preifx, InfiniteWordGenerator infiniteWord)
     {
-        infiniteWord.setW(
-                Stream.concat(
-                    Arrays.stream(prefixWord),
-                    Arrays.stream(infiniteWord.getW()))
-                .toArray(String[]::new));
-        int loopIndexUpperBound = getLoopIndexUpperBound(infiniteWord);
-        List<Pair> run = getRun(infiniteWord, loopIndexUpperBound);
-        int loopSize = getLoopSize(infiniteWord, run, loopIndexUpperBound);
-        return Math.max(0, getLoopIndex(run, loopSize) - prefixWord.length);//todo: problem as described above
+        String [] newPrefix = Stream.concat(
+                Arrays.stream(preifx),
+                Arrays.stream(infiniteWord.getW()))
+                .toArray(String[]::new);
+        InfiniteWordGenerator infWordWithPrefix = new InfiniteWordGenerator(newPrefix, infiniteWord.getV());
+        int loopIndexUpperBound = getLoopIndexUpperBound(infWordWithPrefix);
+        List<Pair> run = getRun(infWordWithPrefix, loopIndexUpperBound);
+        int loopSize = getLoopSize(infWordWithPrefix, run, loopIndexUpperBound);
+        return Math.max(0, getLoopIndex(run, loopSize) - preifx.length);//todo: problem as described above
     }
 
     public Boolean membershipQuery(InfiniteWordGenerator infiniteWord)
