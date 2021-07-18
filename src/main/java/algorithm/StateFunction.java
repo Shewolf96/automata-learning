@@ -7,10 +7,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
-public class StateFunction {
+public class StateFunction extends C {
 
     private Long id;
-    private HashSet<InfiniteWordGenerator> C = new HashSet<>();
+//    private HashSet<InfiniteWordGenerator> C = new HashSet<>();
     private HashMap<InfiniteWordGenerator, P<Boolean, Long>> definingFunction = new HashMap<>();
     private String[] selector;
     private HashMap<String, StateFunction> descendants = new HashMap<>();
@@ -22,17 +22,23 @@ public class StateFunction {
         this.selector = new String[]{};
     }
 
-    public StateFunction(Long id, HashMap<InfiniteWordGenerator, P<Boolean, Long>> definingFunction, String[] selector, HashSet<InfiniteWordGenerator> C) {
+//    public StateFunction(Long id, HashMap<InfiniteWordGenerator, P<Boolean, Long>> definingFunction, String[] selector, HashSet<InfiniteWordGenerator> C) {
+//        this.id = id;
+//        this.C = C;
+//        this.definingFunction = definingFunction;
+//        this.selector = selector;
+//    }
+
+    public StateFunction(Long id, HashMap<InfiniteWordGenerator, P<Boolean, Long>> definingFunction, String[] selector) {
         this.id = id;
-        this.C = C;
         this.definingFunction = definingFunction;
         this.selector = selector;
     }
 
     public Boolean isOnAnyAcceptingLoop() {
-        HashSet<InfiniteWordGenerator> emptyPrefixWords = C.stream().filter(w -> (w.getW().length == 0)).collect(Collectors.toCollection(HashSet::new));
+        HashSet<InfiniteWordGenerator> emptyPrefixWords = C.stream().filter(w -> (w.getW().length == 0)).collect(Collectors.toCollection(HashSet::new));//HERE...
         for(InfiniteWordGenerator infWord : emptyPrefixWords) {
-            if(!definingFunction.get(infWord).first && definingFunction.get(infWord).second == 0) return false;
+            if(definingFunction.get(infWord).first == false && definingFunction.get(infWord).second == 0l) return false;//??? todo: ASK!!
         }
         return true;
     }
@@ -49,8 +55,6 @@ public class StateFunction {
 
     public void setSelector(String[] selector) { this.selector = selector; }
 
-    public HashMap<String, StateFunction> gettDescendants() { return descendants; }
-
     public void setDescendants(HashMap<String, StateFunction> descendants) { this.descendants = descendants; }
 
     public Boolean isAccepting() { return accepting; }
@@ -59,7 +63,7 @@ public class StateFunction {
 
     public HashMap<String, StateFunction> getDescendants() { return descendants; }
 
-    public Boolean getVisited() { return visited; }
+    public Boolean isVisited() { return visited; }
 
     public void setVisited(Boolean visited) { this.visited = visited; }
 
@@ -73,7 +77,7 @@ public class StateFunction {
         }
         StateFunction s = (StateFunction) o;
         for(InfiniteWordGenerator infWord : C) {
-            if(!definingFunction.get(infWord).equals(s.definingFunction.get(infWord)))
+            if(!s.definingFunction.get(infWord).equals(this.definingFunction.get(infWord)))
                 return false;
         }
         return true;

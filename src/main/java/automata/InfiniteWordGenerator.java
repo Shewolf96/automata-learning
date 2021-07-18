@@ -25,6 +25,11 @@ public class InfiniteWordGenerator {
         this.v = v.toArray(new String[0]);
     }
 
+    public InfiniteWordGenerator(String w, String v) {
+        this.w = w.split(",|;");
+        this.v = v.split(",|;");
+    }
+
     public String [] getPrefix(Long prefix) {
         return Stream.concat(Stream.of(w), Stream.generate(this::getVAsList).flatMap(Collection::stream))
                 .limit(prefix).toArray(String[]::new);
@@ -55,7 +60,6 @@ public class InfiniteWordGenerator {
             return false;
         }
         InfiniteWordGenerator infiniteWord = (InfiniteWordGenerator) o;
-
         return Arrays.equals(infiniteWord.getW(), this.getW()) && Arrays.equals(infiniteWord.getV(), this.getV());
     }
 }

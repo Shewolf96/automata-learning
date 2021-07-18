@@ -5,11 +5,11 @@ import org.apache.commons.collections4.map.MultiKeyMap;
 
 import java.util.*;
 
-public class GenerateAutomaton {
+public class GenerateAutomaton extends C {
 
     Teacher teacher;
 
-    public HashSet<InfiniteWordGenerator> C;
+//    public HashSet<InfiniteWordGenerator> C;
     public HashMap<Long, StateFunction> states;
     public List<String> letters;
     public StateFunction initialState;
@@ -34,7 +34,8 @@ public class GenerateAutomaton {
         this.letters = teacher.getLetters();
         states = new HashMap<>();
         transitions = new MultiKeyMap();
-        initialState = new StateFunction(id.next());
+//        initialState = new StateFunction(id.next());
+        initialState = computeStateFunction(new String [] {});
         states.put(initialState.getId(), initialState);
         addSuccessors();
         computeAcceptingStates();
@@ -45,6 +46,7 @@ public class GenerateAutomaton {
         queue.add(initialState);
         while(!queue.isEmpty()) {
             StateFunction state = queue.remove();
+            if(state.isVisited()) continue;
             state.setVisited(true);
             for(String letter : letters) {
                 if(transitions.get(state, letter) == null) {
@@ -54,27 +56,27 @@ public class GenerateAutomaton {
                     Optional<StateFunction> existingState = states.values().stream().filter(a -> a.equals(q)).findFirst();
                     if(existingState.isPresent()) {
                         transitions.put(state, letter, existingState.get());
-                        state.getDescendants().put(letter, existingState.get());
+                        state.getDescendants().put(letter, existingState.get());//and maybe destroy q and id--?
                     } else {
                         states.put(q.getId(), q);
                         state.getDescendants().put(letter, q);
                         transitions.put(state, letter, q);
-                        nextSelector[nextSelector.length -1] = letter;
                         q.setSelector(nextSelector);
                     }
                 }
             }
-            state.getDescendants().values().stream().filter(s -> !s.getVisited()).forEach(s -> queue.add(s));
+            state.getDescendants().values().stream().filter(s -> !s.isVisited()).forEach(s -> queue.add(s));
         }
     }
-    private StateFunction computeStateFunction(String[] selector) {
+    protected StateFunction computeStateFunction(String[] selector) {
         HashMap<InfiniteWordGenerator, P<Boolean, Long>> definingFunction = new HashMap<>();
         C.stream().forEach(infWord -> definingFunction.put(
-                infWord, new P(teacher.membershipQuery(infWord), teacher.loopIndexQuery(selector, infWord))));
-        return new StateFunction(id.next(), definingFunction, selector, C);
+                infWord, new P(teacher.membershipQuery(selector, infWord), teacher.loopIndexQuery(selector, infWord))));//AND HERE...
+//        return new StateFunction(id.next(), definingFunction, selector, C);
+        return new StateFunction(id.next(), definingFunction, selector);
     }
 
-    private void computeAcceptingStates() {
+    protected void computeAcceptingStates() {
         states.values().stream().filter(StateFunction::isOnAnyAcceptingLoop).forEach(s -> s.setAccepting(true));
     }
 

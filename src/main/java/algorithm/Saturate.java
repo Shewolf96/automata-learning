@@ -25,13 +25,14 @@ public class Saturate {
         do {
             i++;
             String[] witnessWordPrefix = witnessWord.getPrefix(i.longValue() - 1);
+            //ok - to tutaj mogłabyś nie brać domknięcia i potem filtrować, tylko wziąć wszystkie v i ich rotacje - a potem dokleić ten witnessWordPrefix
 
-            HashSet<InfiniteWordGenerator> C1 = new HashSet<>(C) ;
+            HashSet<InfiniteWordGenerator> C1 = new HashSet<>(C);
             C1.add(witnessWord);
             C1 = getClosure(C1).stream().filter(infWord -> infWord.getW().length == 0).collect(Collectors.toCollection(HashSet::new));
             C1.forEach(infWord -> infWord.setW(witnessWordPrefix));
 
-            C.addAll(getClosure(C1));
+            C.addAll(getClosure(C1));//AND HERE you would keep only C1 without closure
             GenerateAutomaton GA = new GenerateAutomaton(C, teacher);
             isAccepting = GA.transition(witnessWord, i.longValue()).isAccepting();
         } while (teacher.membershipQuery(witnessWord) != isAccepting);

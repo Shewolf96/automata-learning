@@ -40,7 +40,7 @@ public class Teacher {
     }
 
     private List<Pair> getRun(InfiniteWordGenerator infiniteWord, int loopIndexUpperBound) {
-        String [] prefix = infiniteWord.getPrefix(Long.valueOf(loopIndexUpperBound));
+        String [] prefix = infiniteWord.getPrefix(Long.valueOf(loopIndexUpperBound + 1));
         return targetAutomaton.getLetterStateRun(prefix);
     }
 
@@ -51,12 +51,12 @@ public class Teacher {
         return loopSize;
     }
 
-    private Integer getLoopIndex(List<Pair> run, int loopSize) {
-        int loopIndex = 0;
-        while (!run.subList(loopIndex, loopIndex + loopSize).equals(run.subList(loopIndex + loopSize, loopIndex + 2 * loopSize))) {
-            loopIndex += 1;
+    private Integer getLoopIndex(List<Pair> run, int loopSize, int loopIndexUpperBound) {
+        int loopIndex = loopIndexUpperBound - 2 * loopSize;
+        while (loopIndex >= 0 && run.subList(loopIndex, loopIndex + loopSize).equals(run.subList(loopIndex + loopSize, loopIndex + 2 * loopSize))) {
+            loopIndex --;
         }
-        return loopIndex;
+        return loopIndex + 1;
     }
 
     public Integer loopIndexQuery(InfiniteWordGenerator infiniteWord)
@@ -64,20 +64,20 @@ public class Teacher {
         int loopIndexUpperBound = getLoopIndexUpperBound(infiniteWord);
         List<Pair> run = getRun(infiniteWord, loopIndexUpperBound);
         int loopSize = getLoopSize(infiniteWord, run, loopIndexUpperBound);
-        return getLoopIndex(run, loopSize);//todo: what about loop starting straight away? We get result 1 (maybe should be 0?)
+        return getLoopIndex(run, loopSize, loopIndexUpperBound);
     }
 
-    public Integer loopIndexQuery(String[] preifx, InfiniteWordGenerator infiniteWord)
+    public Integer loopIndexQuery(String[] prefix, InfiniteWordGenerator infiniteWord)
     {
         String [] newPrefix = Stream.concat(
-                Arrays.stream(preifx),
+                Arrays.stream(prefix),
                 Arrays.stream(infiniteWord.getW()))
                 .toArray(String[]::new);
         InfiniteWordGenerator infWordWithPrefix = new InfiniteWordGenerator(newPrefix, infiniteWord.getV());
         int loopIndexUpperBound = getLoopIndexUpperBound(infWordWithPrefix);
         List<Pair> run = getRun(infWordWithPrefix, loopIndexUpperBound);
         int loopSize = getLoopSize(infWordWithPrefix, run, loopIndexUpperBound);
-        return Math.max(0, getLoopIndex(run, loopSize) - preifx.length);//todo: problem as described above
+        return Math.max(0, getLoopIndex(run, loopSize, loopIndexUpperBound) - prefix.length);
     }
 
     public Boolean membershipQuery(InfiniteWordGenerator infiniteWord)
@@ -85,13 +85,23 @@ public class Teacher {
         int loopIndexUpperBound = getLoopIndexUpperBound(infiniteWord);
         List<Pair> run = getRun(infiniteWord, loopIndexUpperBound);
         int loopSize = getLoopSize(infiniteWord, run, loopIndexUpperBound);
-        int loopIndex = getLoopIndex(run, loopSize);
+        int loopIndex = getLoopIndex(run, loopSize, loopIndexUpperBound);
         List<Pair> loopRun = run.subList(loopIndex, loopIndex + loopSize);
         for (Pair p : loopRun) {
             if (targetAutomaton.getStates().get(p.getStateId()).isAccepting())
                 return true;
         }
         return false;
+    }
+
+    public Boolean membershipQuery(String[] prefix, InfiniteWordGenerator infiniteWord) {
+
+        String [] newPrefix = Stream.concat(
+                Arrays.stream(prefix),
+                Arrays.stream(infiniteWord.getW()))
+                .toArray(String[]::new);
+        InfiniteWordGenerator infWordWithPrefix = new InfiniteWordGenerator(newPrefix, infiniteWord.getV());
+        return membershipQuery(infWordWithPrefix);
     }
 
     public List<String> getLetters() {

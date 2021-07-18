@@ -52,10 +52,10 @@ public final class TargetAutomaton extends Automaton {
     }
 
     public List<Pair> getLetterStateRun(String [] infiniteWordPrefix) {
-        List<Pair> run = Lists.newArrayList( new Pair("", initialStateId));
+        List<Pair> run = Lists.newArrayList();
         State currentState = initialState;
         for(String letter : infiniteWordPrefix) {
-            run.add(new Pair(letter, currentState.getIndexTransitions().get(letter)));
+            run.add(new Pair(letter, currentState.getId()));
             currentState = currentState.getStateTransitions().get(letter);
         }
         return run;
@@ -65,7 +65,6 @@ public final class TargetAutomaton extends Automaton {
         return states.size();
     }
 
-    @Override
     public <B> B foldRight(B z, BiFunction<?, B, B> f) {
         return null;
     }

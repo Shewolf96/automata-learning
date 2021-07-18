@@ -69,7 +69,48 @@ public class TestSaturate extends Saturate {
     }
 
     @Test
-    public void testClosure() {
+    public void testEmptyClosure() {
+        HashSet<InfiniteWordGenerator> actualSet = new HashSet<>();
+        Assert.assertTrue(mutuallyContains(super.getClosure(actualSet), new HashSet<>()));
+    }
+
+    @Test
+    public void testSingletonClosure() {
+        HashSet<InfiniteWordGenerator> actualSet = new HashSet<>();
+        actualSet.add(new InfiniteWordGenerator(new String [] {}, new String [] {"a"}));
+        Assert.assertTrue(mutuallyContains(super.getClosure(actualSet), actualSet));
+    }
+
+    @Test
+    public void testClosure1() {
+        HashSet<InfiniteWordGenerator> actualSet = new HashSet<>();
+        actualSet.add(new InfiniteWordGenerator(new String [] {}, new String [] {"a", "b"}));
+        actualSet.add(new InfiniteWordGenerator(new String [] {}, new String [] {"c", "d"}));
+        actualSet.add(new InfiniteWordGenerator(new String [] {}, new String [] {"b", "a"}));
+
+        HashSet<InfiniteWordGenerator> expectedSet = new HashSet<>(actualSet);
+        expectedSet.add(new InfiniteWordGenerator(new String [] {}, new String [] {"d", "c"}));
+
+        Assert.assertTrue(mutuallyContains(super.getClosure(actualSet), expectedSet));
+
+    }
+
+    @Test
+    public void testClosure2() {
+        HashSet<InfiniteWordGenerator> actualSet = new HashSet<>();
+        actualSet.add(new InfiniteWordGenerator(new String [] {}, new String [] {"a", "b", "c"}));
+        actualSet.add(new InfiniteWordGenerator(new String [] {"a"}, new String [] {"a"}));
+        actualSet.add(new InfiniteWordGenerator(new String [] {"a", "b", "c"}, new String [] {"z", "z"}));
+
+        HashSet<InfiniteWordGenerator> expectedSet = new HashSet<>(actualSet);
+        expectedSet.add(new InfiniteWordGenerator(new String [] {}, new String [] {"b", "c", "a"}));
+        expectedSet.add(new InfiniteWordGenerator(new String [] {}, new String [] {"c", "a", "b"}));
+        expectedSet.add(new InfiniteWordGenerator(new String [] {}, new String [] {"a"}));
+        expectedSet.add(new InfiniteWordGenerator(new String [] {"b", "c"}, new String [] {"z", "z"}));
+        expectedSet.add(new InfiniteWordGenerator(new String [] {"c"}, new String [] {"z", "z"}));
+        expectedSet.add(new InfiniteWordGenerator(new String [] {}, new String [] {"z", "z"}));
+
+        Assert.assertTrue(mutuallyContains(super.getClosure(actualSet), expectedSet));
 
     }
 
