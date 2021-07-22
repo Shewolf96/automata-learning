@@ -16,22 +16,11 @@ public class Algorithm {
         LearningAutomaton LA = new LearningAutomaton(GA);
         InfiniteWordGenerator divergingWord = teacher.equivalenceQuery(LA);
         while (!divergingWord.isEmpty()) {
-            C = Saturate.Saturate(divergingWord, C, teacher);
-            GA = new GenerateAutomaton(C, teacher);
+            GA = Saturate.Saturate(divergingWord, C, teacher);
             LA = new LearningAutomaton(GA);
             divergingWord = teacher.equivalenceQuery(LA);
         }
         return LA;
     }
-
-//procedure LEARN (T)
-//
-//    C := ∅
-//    A := GENERATE AUTOMATON (C, T)
-//        while T. EQUIVALENCE (A) 6 = true do
-//            (w,v) := T. EQUIVALENCE (A)
-//    C := SATURATE (w, v, C, T)
-//    A := GENERATE AUTOMATON (C, T)
-//    return A
 
 }

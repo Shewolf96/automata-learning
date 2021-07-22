@@ -9,7 +9,6 @@ public class GenerateAutomaton extends C {
 
     Teacher teacher;
 
-//    public HashSet<InfiniteWordGenerator> C;
     public HashMap<Long, StateFunction> states;
     public List<String> letters;
     public StateFunction initialState;
@@ -34,7 +33,6 @@ public class GenerateAutomaton extends C {
         this.letters = teacher.getLetters();
         states = new HashMap<>();
         transitions = new MultiKeyMap();
-//        initialState = new StateFunction(id.next());
         initialState = computeStateFunction(new String [] {});
         states.put(initialState.getId(), initialState);
         addSuccessors();
@@ -72,7 +70,6 @@ public class GenerateAutomaton extends C {
         HashMap<InfiniteWordGenerator, P<Boolean, Long>> definingFunction = new HashMap<>();
         C.stream().forEach(infWord -> definingFunction.put(
                 infWord, new P(teacher.membershipQuery(selector, infWord), teacher.loopIndexQuery(selector, infWord))));//AND HERE...
-//        return new StateFunction(id.next(), definingFunction, selector, C);
         return new StateFunction(id.next(), definingFunction, selector);
     }
 

@@ -5,6 +5,7 @@ import com.google.inject.internal.util.Lists;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 public class InfiniteWordGenerator {
@@ -61,5 +62,10 @@ public class InfiniteWordGenerator {
         }
         InfiniteWordGenerator infiniteWord = (InfiniteWordGenerator) o;
         return Arrays.equals(infiniteWord.getW(), this.getW()) && Arrays.equals(infiniteWord.getV(), this.getV());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(Arrays.hashCode(w), Arrays.hashCode(v));
     }
 }

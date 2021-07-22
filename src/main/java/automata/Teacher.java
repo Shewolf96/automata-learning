@@ -67,7 +67,7 @@ public class Teacher {
         return getLoopIndex(run, loopSize, loopIndexUpperBound);
     }
 
-    public Integer loopIndexQuery(String[] prefix, InfiniteWordGenerator infiniteWord)
+    public Long loopIndexQuery(String[] prefix, InfiniteWordGenerator infiniteWord)
     {
         String [] newPrefix = Stream.concat(
                 Arrays.stream(prefix),
@@ -77,7 +77,7 @@ public class Teacher {
         int loopIndexUpperBound = getLoopIndexUpperBound(infWordWithPrefix);
         List<Pair> run = getRun(infWordWithPrefix, loopIndexUpperBound);
         int loopSize = getLoopSize(infWordWithPrefix, run, loopIndexUpperBound);
-        return Math.max(0, getLoopIndex(run, loopSize, loopIndexUpperBound) - prefix.length);
+        return Long.valueOf(Math.max(0, getLoopIndex(run, loopSize, loopIndexUpperBound) - prefix.length));
     }
 
     public Boolean membershipQuery(InfiniteWordGenerator infiniteWord)

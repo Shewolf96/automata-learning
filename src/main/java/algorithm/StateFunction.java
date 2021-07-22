@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 public class StateFunction extends C {
 
     private Long id;
-//    private HashSet<InfiniteWordGenerator> C = new HashSet<>();
     private HashMap<InfiniteWordGenerator, P<Boolean, Long>> definingFunction = new HashMap<>();
     private String[] selector;
     private HashMap<String, StateFunction> descendants = new HashMap<>();
@@ -22,13 +21,6 @@ public class StateFunction extends C {
         this.selector = new String[]{};
     }
 
-//    public StateFunction(Long id, HashMap<InfiniteWordGenerator, P<Boolean, Long>> definingFunction, String[] selector, HashSet<InfiniteWordGenerator> C) {
-//        this.id = id;
-//        this.C = C;
-//        this.definingFunction = definingFunction;
-//        this.selector = selector;
-//    }
-
     public StateFunction(Long id, HashMap<InfiniteWordGenerator, P<Boolean, Long>> definingFunction, String[] selector) {
         this.id = id;
         this.definingFunction = definingFunction;
@@ -38,7 +30,7 @@ public class StateFunction extends C {
     public Boolean isOnAnyAcceptingLoop() {
         HashSet<InfiniteWordGenerator> emptyPrefixWords = C.stream().filter(w -> (w.getW().length == 0)).collect(Collectors.toCollection(HashSet::new));//HERE...
         for(InfiniteWordGenerator infWord : emptyPrefixWords) {
-            if(definingFunction.get(infWord).first == false && definingFunction.get(infWord).second == 0l) return false;//??? todo: ASK!!
+            if(definingFunction.get(infWord).first == false && definingFunction.get(infWord).second == 0L) return false;
         }
         return true;
     }
