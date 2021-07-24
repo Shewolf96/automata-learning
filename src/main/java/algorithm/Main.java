@@ -15,8 +15,8 @@ public class Main {
 
         JSONParser parser = new JSONParser();
         try {
-            Object obj = parser.parse(new FileReader("src/main/java/test/resources/automata/automata6.1"));
-            Object obj2 = parser.parse(new FileReader("src/main/java/test/resources/automata/automata6.2"));
+            Object obj = parser.parse(new FileReader("src/main/java/test/resources/automata/automata5.1"));
+            Object obj2 = parser.parse(new FileReader("src/main/java/test/resources/automata/automata5.2"));
 
             JSONObject jsonObject = (JSONObject) obj;
 
@@ -38,7 +38,7 @@ public class Main {
             LearningAutomaton automaton = new LearningAutomaton(automata2, alphabet2, states2, iniitialState2);
             teacher.equivalenceQuery(automaton);
 
-            Algorithm.learn(targetAutomaton);
+//            Algorithm.learn(targetAutomaton);
 
         } catch (Exception e) {
             e.printStackTrace();

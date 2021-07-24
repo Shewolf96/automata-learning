@@ -31,9 +31,10 @@ public class AuxiliaryFunctions {
 
     public static Boolean checkAllCycles(ProductState initialState, ProductState currentState, Stack<String> currentCycle) {
         currentState.setVisited(true);
+        ProductState nextState = currentState;
         for(Map.Entry<String, ProductState> transition : currentState.getStateTransitions().entrySet()) {
             String letter = transition.getKey();
-            ProductState nextState = transition.getValue();
+            nextState = transition.getValue();
             if(nextState == initialState) {
                 currentCycle.push(letter);
                 if (!checkCycle(initialState.second, currentCycle)) {
@@ -47,7 +48,11 @@ public class AuxiliaryFunctions {
             currentCycle.push(letter);
             if(!checkAllCycles(initialState, nextState, currentCycle)) return false;
         }
-        if(!currentCycle.empty()) currentCycle.pop();
+        if(!currentCycle.empty())
+        {
+            currentCycle.pop();
+            nextState.setVisited(false);
+        }
         return true;
     }
 

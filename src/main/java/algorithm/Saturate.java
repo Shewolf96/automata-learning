@@ -56,7 +56,7 @@ public class Saturate {
         }
         for (int i = 0; i < infWordCycle.size(); i ++) {
             rotations.add(new InfiniteWordGenerator(new LinkedList<>(), infWordCycle));
-            infWordCycle.add(infWordCycle.remove(0));//??
+            infWordCycle.add(infWordCycle.remove(0));
         }
         return rotations;
     }

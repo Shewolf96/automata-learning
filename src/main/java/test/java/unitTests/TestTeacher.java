@@ -93,7 +93,7 @@ public class TestTeacher {
     public void testEquivalenceQuery5() {
         Teacher teacher = ParseAutomataService.getTeacher("automata5.1");
         LearningAutomaton LA = ParseAutomataService.parseLearningAutomaton("automata5.2");
-        Assert.assertTrue(teacher.equivalenceQuery(LA).isEmpty());
+        Assert.assertFalse(teacher.equivalenceQuery(LA).isEmpty());
 
     }
 
