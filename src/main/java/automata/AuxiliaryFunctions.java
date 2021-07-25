@@ -37,7 +37,7 @@ public class AuxiliaryFunctions {
             nextState = transition.getValue();
             if(nextState == initialState) {
                 currentCycle.push(letter);
-                if (!checkCycle(initialState.second, currentCycle)) {
+                if (!checkCycle(initialState.state2, currentCycle)) {
                     return false;
                 }
                 currentCycle.pop();

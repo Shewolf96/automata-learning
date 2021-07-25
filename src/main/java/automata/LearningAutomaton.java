@@ -46,7 +46,7 @@ public class LearningAutomaton extends Automaton {
     public State transition(State initialState, InfiniteWordGenerator infiniteWord, Long prefix) {
         State currentState = initialState;
         for(String letter : infiniteWord.getPrefix(prefix)) {
-            currentState = currentState.getStateTransitions().get(letter);
+            currentState = currentState.getStateTransitions().get(letter);//todo: try to change it to stream with reduce (for fun and educational purposes ;p)
         }
         return currentState;
     }

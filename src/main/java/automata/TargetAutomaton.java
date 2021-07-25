@@ -23,11 +23,6 @@ public final class TargetAutomaton extends Automaton {
                 s.getStateTransitions().put(sigma.getKey(), this.states.get(sigma.getValue()));
         }
     }
-//
-//    BiConsumer<Long, State> initiateStateTransitions =
-//            (key, value) -> {
-//
-//            }
 
     public State transition(InfiniteWordGenerator infiniteWord, Long prefix) {
         return this.transition(this.initialState, infiniteWord, prefix);

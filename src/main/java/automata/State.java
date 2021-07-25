@@ -62,4 +62,17 @@ public class State {
     public String toString() {
         return String.format("\nState id: %d, \naccepting: %b, \ntransitions: ", id, isAccepting) + Arrays.toString(indexTransitions.entrySet().toArray()) + "\n";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o){
+            return true;
+        }
+        if(!(o instanceof State)) {
+            return false;
+        }
+        State s = (State) o;
+
+        return s.id == this.id;
+    }
 }

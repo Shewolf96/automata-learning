@@ -30,8 +30,8 @@ public class ProductAutomaton {
         }
         for(ProductState s : productStates.values()) {
             for(String letter : letters) {
-                Long transition1 = s.first.getIndexTransitions().get(letter);
-                Long transition2 = s.second.getIndexTransitions().get(letter);
+                Long transition1 = s.state1.getIndexTransitions().get(letter);
+                Long transition2 = s.state2.getIndexTransitions().get(letter);
                 s.getStateTransitions().put(letter, productStates.get(transition1, transition2));
             }
         }
