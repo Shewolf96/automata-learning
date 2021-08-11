@@ -54,7 +54,7 @@ public class GenerateAutomaton extends C {
                     Optional<StateFunction> existingState = states.values().stream().filter(a -> a.equals(q)).findFirst();
                     if(existingState.isPresent()) {
                         transitions.put(state, letter, existingState.get());
-                        state.getDescendants().put(letter, existingState.get());//and maybe destroy q and id--?
+                        state.getDescendants().put(letter, existingState.get());
                     } else {
                         states.put(q.getId(), q);
                         state.getDescendants().put(letter, q);

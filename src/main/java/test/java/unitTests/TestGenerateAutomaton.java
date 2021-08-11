@@ -1,14 +1,12 @@
 package test.java.unitTests;
 
 import algorithm.GenerateAutomaton;
-import algorithm.StateFunction;
 import automata.InfiniteWordGenerator;
 import automata.TargetAutomaton;
 import automata.Teacher;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -79,8 +77,8 @@ public class TestGenerateAutomaton extends GenerateAutomaton{
 //        Teacher teacher = new Teacher(TA);
 //        GenerateAutomaton GA = new GenerateAutomaton(new HashSet<>(), teacher);
 
-        StateFunction stateFunction = super.computeStateFunction(new String [] {"a", "b", "b"});
-        Assert.assertTrue(stateFunction.getDescendants().containsKey(""));
+//        StateFunction stateFunction = super.computeStateFunction(new String [] {"a", "b", "b"});
+//        Assert.assertTrue(stateFunction.getDescendants().containsKey(""));
 
     }
 
@@ -97,7 +95,7 @@ public class TestGenerateAutomaton extends GenerateAutomaton{
     }
 
     @Test
-    public void testAddSuccessors() {//?? maybe test whole GenerateAutomaton instead
+    public void testAddSuccessors() {
     }
 
 }

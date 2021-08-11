@@ -2,11 +2,11 @@ package read;
 
 public class ParsingAutomataService {
 
-    //parse while reading
-    //create TA and parse each state adding it to the automata
-    //read accepting - and that's it
-
     public static void parseInput(String[] input) {
+        System.out.println("Argument count: " + input.length);
+        for (int i = 0; i < input.length; i++) {
+            System.out.println("Argument " + i + ": " + input[i]);
+        }
     }
 
 }
