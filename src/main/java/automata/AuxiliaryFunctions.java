@@ -8,6 +8,26 @@ import java.util.stream.Collectors;
 
 public class AuxiliaryFunctions {
 
+    public static List<State> getReachableStates(Automaton automaton) {
+        List<State> reachableStates = new LinkedList<State>(Arrays.asList(automaton.getInitialState()));
+        dfs(automaton.getInitialState(), reachableStates);
+        for(State s : reachableStates) {
+            s.setVisited(false);
+        }
+        return reachableStates;
+    }
+
+    public static void dfs(State currentState, List<State> reachableStates) {
+        if(currentState.isVisited()) return;
+        currentState.setVisited(true);
+        reachableStates.add(currentState);
+        for (Map.Entry<String, State> transition : currentState.getStateTransitions().entrySet()) {
+            State nextState = transition.getValue();
+            if(nextState.getPredecessor() == null) nextState.setPredecessor(new Pair(transition.getKey(), currentState.getId()));
+            dfs(transition.getValue(), reachableStates);
+        }
+    }
+
     public static List<ProductState> getReachableStates(ProductAutomaton productAutomaton) {
         List<ProductState> reachableStates = new LinkedList<>();
         dfs(productAutomaton.initialState, reachableStates);

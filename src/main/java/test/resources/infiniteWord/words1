@@ -1,9 +1,0 @@
-String[] w = {"a", "b", "a", "b", "b", "c", };
-String[] v = {"a", "b", "a"};
-//For automata1:
-//loopIndex: 10
-//loopSize: 3
-//loopRun: (a,2) (b, 0), (a, 1)
-//bez sensu tak to wszystko pisać
-//no ale trzeba sprawdzić czy te nowe rzeczy działają ^^
-

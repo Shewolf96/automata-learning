@@ -4,9 +4,9 @@ import algorithm.Saturate;
 import automata.InfiniteWordGenerator;
 import org.junit.*;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -52,7 +52,6 @@ public class TestSaturate extends Saturate {
         rotations.add(new InfiniteWordGenerator(new String [] {}, new String [] {"b", "a"}));
 
         Assert.assertTrue(mutuallyContains(super.getRotations(infiniteWord), rotations));
-//        super.getRotations(infiniteWord).forEach(word -> Assert.assertTrue(rotations.contains(word)));
     }
 
     @Test
@@ -114,22 +113,11 @@ public class TestSaturate extends Saturate {
 
     }
 
-    private <E> boolean mutuallyContains(HashSet<E> set1, HashSet<E> set2) {
+    private <E> boolean mutuallyContains(Set<E> set1, Set<E> set2) {
         List<E> list1 = set1.stream().collect(Collectors.toList());
         List<E> list2 = set2.stream().collect(Collectors.toList());
 
         return list1.containsAll(list2) && list2.containsAll(list1);
     }
-
-//    @Test
-//    void groupAssertions() {
-//        int[] numbers = {0, 1, 2, 3, 4};
-//        assertAll("numbers",
-//                () -> assertEquals(numbers[0], 1),
-//                () -> assertEquals(numbers[3], 3),
-//                () -> assertEquals(numbers[4], 1)
-//        );
-//    }
-
 
 }

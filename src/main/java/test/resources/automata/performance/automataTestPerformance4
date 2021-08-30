@@ -1,0 +1,119 @@
+{"automata":{
+    "alphabet": ["a","b"],
+    "initialState": 0,
+    "states": [
+        {
+            "id": 0,
+            "accepting": true
+            "transitions": {
+                "a": 1,
+                "b": 1
+            },
+        },
+        {
+            "id": 1,
+            "accepting": false
+            "transitions": {
+                "a": 0,
+                "b": 2
+            },
+        },
+        {
+            "id": 2,
+            "accepting": false
+            "transitions": {
+                "a": 1,
+                "b": 3
+            },
+        },
+        {
+            "id": 3,
+            "accepting": false
+            "transitions": {
+                "a": 2,
+                "b": 4
+            },
+        },
+        {
+            "id": 4,
+            "accepting": false
+            "transitions": {
+                "a": 3,
+                "b": 5
+            },
+        },
+        {
+            "id": 5,
+            "accepting": false
+            "transitions": {
+                "a": 4,
+                "b": 6
+            },
+        },
+        {
+            "id": 6,
+            "accepting": false
+            "transitions": {
+                "a": 5,
+                "b": 7
+            },
+        },
+        {
+            "id": 7,
+            "accepting": false
+            "transitions": {
+                "a": 6,
+                "b": 8
+            },
+        },
+        {
+            "id": 8,
+            "accepting": false
+            "transitions": {
+                "a": 7,
+                "b": 9
+            },
+        },
+        {
+            "id": 9,
+            "accepting": false
+            "transitions": {
+                "a": 8,
+                "b": 10
+            },
+        },
+        {
+            "id": 10,
+            "accepting": false
+            "transitions": {
+                "a": 9,
+                "b": 11
+            },
+        },
+        {
+            "id": 11,
+            "accepting": false
+            "transitions": {
+                "a": 10,
+                "b": 12
+            },
+        },
+        {
+            "id": 12,
+            "accepting": false
+            "transitions": {
+                "a": 11,
+                "b": 13
+            },
+        },
+        {
+            "id": 13,
+            "accepting": false
+            "transitions": {
+                "a": 0,
+                "b": 13
+            },
+        },
+    ]
+}
+}

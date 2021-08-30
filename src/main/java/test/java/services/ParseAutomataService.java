@@ -23,9 +23,9 @@ public class ParseAutomataService {
             JSONObject automata = (JSONObject) jsonObject.get("automata");
             JSONArray alphabet = (JSONArray) automata.get("alphabet");
             JSONArray states = (JSONArray) automata.get("states");
-            Long iniitialState = (Long) automata.get("initialState");
+            Long initialState = (Long) automata.get("initialState");
 
-            return new TargetAutomaton(automata, alphabet, states, iniitialState);
+            return new TargetAutomaton(automata, alphabet, states, initialState);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -42,9 +42,9 @@ public class ParseAutomataService {
             JSONObject automata = (JSONObject) jsonObject.get("automata");
             JSONArray alphabet = (JSONArray) automata.get("alphabet");
             JSONArray states = (JSONArray) automata.get("states");
-            Long iniitialState = (Long) automata.get("initialState");
+            Long initialState = (Long) automata.get("initialState");
 
-            return new LearningAutomaton(automata, alphabet, states, iniitialState);
+            return new LearningAutomaton(automata, alphabet, states, initialState);
         } catch (Exception e) {
             e.printStackTrace();
         }

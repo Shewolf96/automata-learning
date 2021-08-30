@@ -30,6 +30,10 @@ public class State {
         stateFunction.getDescendants().forEach((letter, descendant) -> this.indexTransitions.put(letter, descendant.getId()));
     }
 
+    public State(Long id) {
+        this.id = id;;
+    }
+
     public Long getId() { return id; }
 
     public void setId(Long id) { this.id = id; }

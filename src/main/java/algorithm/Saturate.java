@@ -1,13 +1,9 @@
 package algorithm;
 
 import automata.InfiniteWordGenerator;
-import automata.LearningAutomaton;
 import automata.Teacher;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Saturate {
@@ -40,13 +36,13 @@ public class Saturate {
         return GA;
     }
 
-    protected static HashSet<InfiniteWordGenerator> getClosure(HashSet<InfiniteWordGenerator> C) {
+    protected static Set<InfiniteWordGenerator> getClosure(HashSet<InfiniteWordGenerator> C) {
         HashSet<InfiniteWordGenerator> closure = new HashSet<>();
         C.stream().forEach(infWord -> closure.addAll(getRotations(infWord)));
         return closure;
     }
 
-    protected static HashSet<InfiniteWordGenerator> getRotations(InfiniteWordGenerator infWord) {
+    protected static Set<InfiniteWordGenerator> getRotations(InfiniteWordGenerator infWord) {
         HashSet<InfiniteWordGenerator> rotations = new HashSet<>();
         List<String> infWordPrefix = infWord.getWAsList();
         List<String> infWordCycle = infWord.getVAsList();

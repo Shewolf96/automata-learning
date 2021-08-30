@@ -24,11 +24,29 @@ public final class TargetAutomaton extends Automaton {
         }
     }
 
-    public State transition(InfiniteWordGenerator infiniteWord, Long prefix) {
+    public TargetAutomaton(String[] letters, Long size) {
+        this.letters = letters;
+        this.initialState = new State(0l);
+        this.initialStateId = 0l;
+        this.states.put(initialState.getId(), initialState);
+        for(long i = 1; i < size; i++) {
+            this.states.put(i, new State(i));
+        }
+        for(State s : this.states.values()) {
+            for(String a : this.letters) {
+                s.setAccepting(new Random().nextBoolean());
+                Long transitionStateId = (long) (Math.random() * size);
+                s.getIndexTransitions().put(a, transitionStateId);
+                s.getStateTransitions().put(a, states.get(transitionStateId));
+            }
+        }
+    }
+
+    protected State transition(InfiniteWordGenerator infiniteWord, Long prefix) {
         return this.transition(this.initialState, infiniteWord, prefix);
     }
 
-    public State transition(State initialState, InfiniteWordGenerator infiniteWord, Long prefix) {
+    protected State transition(State initialState, InfiniteWordGenerator infiniteWord, Long prefix) {
         State currentState = initialState;
         for(String letter : infiniteWord.getPrefix(prefix)) {
             currentState = currentState.getStateTransitions().get(letter);
@@ -36,7 +54,7 @@ public final class TargetAutomaton extends Automaton {
         return currentState;
     }
 
-    public List<Long> getRun(String [] infiniteWordPrefix) {
+    protected List<Long> getRun(String [] infiniteWordPrefix) {
         List<Long> run = Lists.newArrayList(initialStateId);
         State currentState = initialState;
         for(String letter : infiniteWordPrefix) {
@@ -46,7 +64,7 @@ public final class TargetAutomaton extends Automaton {
         return run;
     }
 
-    public List<Pair> getLetterStateRun(String [] infiniteWordPrefix) {
+    protected List<Pair> getLetterStateRun(String [] infiniteWordPrefix) {
         List<Pair> run = Lists.newArrayList();
         State currentState = initialState;
         for(String letter : infiniteWordPrefix) {
@@ -56,7 +74,7 @@ public final class TargetAutomaton extends Automaton {
         return run;
     }
 
-    public int getSize() {
+    protected int getSize() {
         return states.size();
     }
 
