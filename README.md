@@ -37,12 +37,17 @@ Afer the first build, you can run the project:
 or build and run the project:
 
 ```sh
-make run PATH="a path from the root directory to the JSON file with defined automton"
+make run ARGS="a path from the root directory to the JSON file with defined automton"
 ```
 
 example run *:
 ```sh
 ./scripts/run.sh src/main/java/test/resources/automata/automata5.1
+```
+
+or:
+```sh
+make run ARGS=src/main/java/test/resources/automata/automata5.1
 ```
 
 \* note: if you run the program with no arguments, the example automaton hard-coded in `algorithm.Main` will be loaded as an input.
