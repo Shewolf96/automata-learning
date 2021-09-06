@@ -6,7 +6,7 @@ import read.ParsingAutomataService;
 public class Main {
     public static void main(String[] args) {
 
-        String exampleRun = "src/main/java/test/resources/automata/automataPerformanceTest";
+        String exampleRun = "src/main/java/test/resources/automata/automata5.1";
         String path = args.length > 0 ? args[0] : exampleRun;
 
         TargetAutomaton TA = ParsingAutomataService.parseAutomaton(path);

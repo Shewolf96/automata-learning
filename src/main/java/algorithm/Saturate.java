@@ -22,7 +22,6 @@ public class Saturate {
         do {
             i++;
             String[] witnessWordPrefix = witnessWord.getPrefix(i.longValue() - 1);
-            //ok - to tutaj mogłabyś nie brać domknięcia i potem filtrować, tylko wziąć wszystkie v i ich rotacje - a potem dokleić ten witnessWordPrefix
 
             HashSet<InfiniteWordGenerator> C1 = new HashSet<>(C);
             C1.add(witnessWord);

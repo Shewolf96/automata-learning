@@ -38,7 +38,7 @@ public class TestPerformance {
 
     @Test
     public void testPerformanceOnRandomAutomata() {
-        Long automaonSize = 500l;
+        Long automaonSize = 100l;
         Long numberOfTests = 1l;
         Long summaryTime = 0l;
         for(int i = 0; i < numberOfTests; i ++) {
