@@ -134,7 +134,7 @@ public class TestAuxiliaryFunctions {
         Assert.assertEquals(expectedWord, actualWord);;
     }
 
-    private boolean isPredecessor(ProductState productState, P<String, ProductState> transition) {
+    private boolean isPredecessor(ProductState productState, Pair<String, ProductState> transition) {
         String letter = transition.first;
         ProductState predecessor = transition.second;
         return predecessor.state1.getStateTransitions().get(letter).equals(productState.state1) &&

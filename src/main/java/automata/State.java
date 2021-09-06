@@ -12,7 +12,7 @@ public class State {
     private HashMap<String, State> stateTransitions = new HashMap<>();
     private HashMap<String, Long> indexTransitions = new HashMap<>();
     private Boolean visited = false;
-    private Pair predecessor;
+    private StateLetterPair predecessor;
 
     public State(JSONObject state) {
         this.id = (Long) state.get("id");
@@ -54,9 +54,9 @@ public class State {
 
     public void setVisited(Boolean visited) { this.visited = visited; }
 
-    public Pair getPredecessor() { return predecessor; }
+    public StateLetterPair getPredecessor() { return predecessor; }
 
-    public void setPredecessor(Pair predecessor) { this.predecessor = predecessor; }
+    public void setPredecessor(StateLetterPair predecessor) { this.predecessor = predecessor; }
 
     public List<State> getDescendants() {
         return stateTransitions.values().stream().collect(Collectors.toList());

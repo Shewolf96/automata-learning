@@ -1,7 +1,7 @@
 package algorithm;
 
 import automata.InfiniteWordGenerator;
-import automata.P;
+import automata.Pair;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class StateFunction extends C {
 
     private Long id;
-    private HashMap<InfiniteWordGenerator, P<Boolean, Long>> definingFunction = new HashMap<>();
+    private HashMap<InfiniteWordGenerator, Pair<Boolean, Long>> definingFunction = new HashMap<>();
     private String[] selector;
     private HashMap<String, StateFunction> descendants = new HashMap<>();
     private Boolean accepting = false;
@@ -21,14 +21,14 @@ public class StateFunction extends C {
         this.selector = new String[]{};
     }
 
-    public StateFunction(Long id, HashMap<InfiniteWordGenerator, P<Boolean, Long>> definingFunction, String[] selector) {
+    public StateFunction(Long id, HashMap<InfiniteWordGenerator, Pair<Boolean, Long>> definingFunction, String[] selector) {
         this.id = id;
         this.definingFunction = definingFunction;
         this.selector = selector;
     }
 
     public Boolean isOnAnyAcceptingLoop() {
-        HashSet<InfiniteWordGenerator> emptyPrefixWords = C.stream().filter(w -> (w.getW().length == 0)).collect(Collectors.toCollection(HashSet::new));//HERE...
+        HashSet<InfiniteWordGenerator> emptyPrefixWords = C.stream().filter(w -> (w.getW().length == 0)).collect(Collectors.toCollection(HashSet::new));
         for(InfiniteWordGenerator infWord : emptyPrefixWords) {
             if(definingFunction.get(infWord).first == false && definingFunction.get(infWord).second == 0L) return false;
         }
@@ -39,9 +39,9 @@ public class StateFunction extends C {
 
     public void setId(Long id) { this.id = id; }
 
-    public HashMap<InfiniteWordGenerator, P<Boolean, Long>> getDefiningFunction() { return definingFunction; }
+    public HashMap<InfiniteWordGenerator, Pair<Boolean, Long>> getDefiningFunction() { return definingFunction; }
 
-    public void setDefiningFunction(HashMap<InfiniteWordGenerator, P<Boolean, Long>> definingFunction) { this.definingFunction = definingFunction; }
+    public void setDefiningFunction(HashMap<InfiniteWordGenerator, Pair<Boolean, Long>> definingFunction) { this.definingFunction = definingFunction; }
 
     public String[] getSelector() { return selector; }
 

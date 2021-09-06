@@ -67,9 +67,9 @@ public class GenerateAutomaton extends C {
         }
     }
     protected StateFunction computeStateFunction(String[] selector) {
-        HashMap<InfiniteWordGenerator, P<Boolean, Long>> definingFunction = new HashMap<>();
+        HashMap<InfiniteWordGenerator, Pair<Boolean, Long>> definingFunction = new HashMap<>();
         C.stream().forEach(infWord -> definingFunction.put(
-                infWord, new P(teacher.membershipQuery(selector, infWord), teacher.loopIndexQuery(selector, infWord))));//AND HERE...
+                infWord, new Pair(teacher.membershipQuery(selector, infWord), teacher.loopIndexQuery(selector, infWord))));
         return new StateFunction(id.next(), definingFunction, selector);
     }
 

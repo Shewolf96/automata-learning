@@ -29,7 +29,7 @@ public class Saturate {
             C1 = getClosure(C1).stream().filter(infWord -> infWord.getW().length == 0).collect(Collectors.toCollection(HashSet::new));
             C1.forEach(infWord -> infWord.setW(witnessWordPrefix));
 
-            C.addAll(getClosure(C1));//AND HERE you would keep only C1 without closure
+            C.addAll(getClosure(C1));
             GA = new GenerateAutomaton(C, teacher);
             isAccepting = GA.transition(witnessWord, i.longValue()).isAccepting();
         } while (teacher.membershipQuery(witnessWord) != isAccepting);

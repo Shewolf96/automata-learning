@@ -6,7 +6,7 @@ public class ProductState {
 
     private Boolean visited = false;
     private Boolean reachable = false;
-    private P<String, ProductState> predecessor;
+    private Pair<String, ProductState> predecessor;
     private HashMap<String, ProductState> stateTransitions = new HashMap<>();
 
     public State state1;
@@ -25,9 +25,9 @@ public class ProductState {
 
     public void setReachable(Boolean reachable) { this.reachable = reachable; }
 
-    public P<String, ProductState> getPredecessor() { return predecessor; }
+    public Pair<String, ProductState> getPredecessor() { return predecessor; }
 
-    public void setPredecessor(P<String, ProductState> predecessor) { this.predecessor = predecessor; }
+    public void setPredecessor(Pair<String, ProductState> predecessor) { this.predecessor = predecessor; }
 
     public HashMap<String, ProductState> getStateTransitions() { return stateTransitions; }
 

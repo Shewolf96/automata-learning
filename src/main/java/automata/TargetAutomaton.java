@@ -64,11 +64,11 @@ public final class TargetAutomaton extends Automaton {
         return run;
     }
 
-    protected List<Pair> getLetterStateRun(String [] infiniteWordPrefix) {
-        List<Pair> run = Lists.newArrayList();
+    protected List<StateLetterPair> getLetterStateRun(String [] infiniteWordPrefix) {
+        List<StateLetterPair> run = Lists.newArrayList();
         State currentState = initialState;
         for(String letter : infiniteWordPrefix) {
-            run.add(new Pair(letter, currentState.getId()));
+            run.add(new StateLetterPair(letter, currentState.getId()));
             currentState = currentState.getStateTransitions().get(letter);
         }
         return run;

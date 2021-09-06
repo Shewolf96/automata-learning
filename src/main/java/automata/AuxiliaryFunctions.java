@@ -23,7 +23,7 @@ public class AuxiliaryFunctions {
         reachableStates.add(currentState);
         for (Map.Entry<String, State> transition : currentState.getStateTransitions().entrySet()) {
             State nextState = transition.getValue();
-            if(nextState.getPredecessor() == null) nextState.setPredecessor(new Pair(transition.getKey(), currentState.getId()));
+            if(nextState.getPredecessor() == null) nextState.setPredecessor(new StateLetterPair(transition.getKey(), currentState.getId()));
             dfs(transition.getValue(), reachableStates);
         }
     }
@@ -44,7 +44,7 @@ public class AuxiliaryFunctions {
         reachableStates.add(currentState);
         for (Map.Entry<String, ProductState> transition : currentState.getStateTransitions().entrySet()) {
             ProductState nextState = transition.getValue();
-            if(nextState.getPredecessor() == null) nextState.setPredecessor(new P(transition.getKey(), currentState));
+            if(nextState.getPredecessor() == null) nextState.setPredecessor(new Pair(transition.getKey(), currentState));
             dfs(transition.getValue(), reachableStates);
         }
     }
